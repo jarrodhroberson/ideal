@@ -1,0 +1,59 @@
+# Particular to this project
+*.launch
+*.cache.html
+*.cache.png
+__*
+
+# Compiled Source
+*.class
+*.pyc
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.tar
+*.iso
+*.zip
+*.jar
+*.war
+*.ear
+
+# Logs and Databases tmp files
+*.log
+*.sqlite
+*~
+*.bak
+*.csv
+*.CSV
+*.pdf
+*.dat
+release.properties
+
+# Directories
+bin/
+classes/
+lib/
+build/
+log/
+logs/
+tmp/
+temp/
+.svn/
+.cvs/
+target/
+
+# text-editor/IDE specific
+*.swp
+*.project
+*.classpath
+*.settings
+*hosted.html
+*cache.html
+.settings/
+.idea/
+*.iml
+*.iws
+*.ipr
