@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vertigrated</groupId>
-    <artifactId>scratch</artifactId>
+    <artifactId>ideal</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>

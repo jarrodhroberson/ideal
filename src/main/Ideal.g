@@ -15,7 +15,7 @@ function : ID '(' args ')' ('->' (statement | expression) (',' (statement | expr
 
 args 	: arg (',' arg)*;		
 
-arg 	: ID ('=' expression)?;
+arg 	: ID ('->' expression)?;
 
 statement : assignment 
           | function
@@ -25,7 +25,9 @@ assignment : ID '->' (expression | function | string) ;
 
 string 	: UNICODE_STRING;
 	
-number : HEX_NUMBER | INTEGER ( '.' INTEGER )?;
+number : HEX_NUMBER 
+       | (INTEGER '.' INTEGER)=> INTEGER '.' INTEGER
+       | INTEGER;
 
 // expressions
 
