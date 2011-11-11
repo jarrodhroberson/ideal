@@ -11,19 +11,22 @@ options {
 
 program : (statement'.')* ;
 
-function : ID '(' args ')' ('->' (statement | expression) (',' (statement | expression))*)? ;	
+function : ID '(' args ')' '->' (expression | statement) (',' (expression | statement))* ;	
 
-args 	: arg (',' arg)*;		
+args : arg (',' arg)*;		
 
-arg 	: ID ('->' expression)?;
+arg : ID | expression;
 
-statement : assignment 
-          | function
+statement : function
+          | assignment 
           ;
 
-assignment : ID '->' (expression | function | string) ;	
+assignment : ID '->' expression
+           | ATOM '->' expression 
+           | ATOM
+           ;	
 
-string 	: UNICODE_STRING;
+string : UNICODE_STRING;
 	
 number : HEX_NUMBER 
        | (INTEGER '.' INTEGER)=> INTEGER '.' INTEGER
@@ -31,19 +34,24 @@ number : HEX_NUMBER
 
 // expressions
 
-term 	: ID | '(' expression ')' | number ;
+term : (ID)=> ID 
+     |'(' expression ')'  
+     | number
+     | string
+     | ID '(' args ')'
+     ;
 
 negation : '!'* term;	
 
-unary 	: ('+'|'-')* negation;
+unary : ('+'|'-')* negation;
 
-mult 	: unary (('*' | '/' | ('%'|'mod') ) unary)*;	
+mult : unary (('*' | '/' | ('%'|'mod') ) unary)*;	
 
-add 	: mult (('+' | '-') mult)*; 
+add : mult (('+' | '-') mult)*; 
 
 relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)*;
 			
-expression :	relation (('&&' | '||') relation)*;
+expression : relation (('&&' | '||') relation)*;
 
 // ================================================================
 
@@ -51,26 +59,26 @@ HEX_NUMBER : '0x' HEX_DIGIT+;
 
 INTEGER : DIGIT+;
 
-UNICODE_STRING 	: '"' (ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"'
-                | '\'' (ESC | ~('\u0000'..'\u001f' | '\\' | '\'' ) )* '\'';
+UNICODE_STRING 	: '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"'
+                ;
 
-WS: (' '|'\n'|'\r'|'\t')+ {$channel = HIDDEN;} ; // ignore whitespace
+WS : (' '|'\n'|'\r'|'\t')+ {$channel = HIDDEN;} ; // ignore whitespace
 
 fragment 
-ESC   	:   '\\' (UNI_ESC |'b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+ESC : '\\' ( UNI_ESC |'b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\' );
 
 fragment 
 UNI_ESC	: 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT;
 
 fragment
-HEX_DIGIT : ('0'..'9'|'a'..'f'|'A'..'F') ;
+HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 
 fragment
-DIGIT   :   ('0'..'9');
+DIGIT : ('0'..'9');
 
-ATOM 	: ('A'..'Z'|'_')+;
+ATOM : ('A'..'Z'|'_')+;
 
-ID  :   ('a'..'z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
+ID : ('a'..'z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 
 COMMENT : '/*' .* '*/' {$channel = HIDDEN;};
 
