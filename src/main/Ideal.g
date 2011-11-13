@@ -11,19 +11,20 @@ options {
 
 program : (statement'.')* ;
 
-function : ID '(' args ')' '->' (expression | statement) (',' (expression | statement))* ;	
+function : ID '(' args ')' '->' statement (',' statement)* ;	
 
 args : arg (',' arg)*;		
 
-arg : ID | expression;
+arg : (ID)=> ID | expression;
 
-statement : function
-          | assignment 
+statement : ATOM
+	  | expression
+          | assignment
+          | function
           ;
 
 assignment : ID '->' expression
-           | ATOM '->' expression 
-           | ATOM
+           | ATOM '->' ( string | number )
            ;	
 
 string : UNICODE_STRING;
@@ -34,11 +35,10 @@ number : HEX_NUMBER
 
 // expressions
 
-term : (ID)=> ID 
+term : ID 
      |'(' expression ')'  
      | number
      | string
-     | ID '(' args ')'
      ;
 
 negation : '!'* term;	

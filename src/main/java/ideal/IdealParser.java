@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g 2011-11-11 14:21:34
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g 2011-11-11 16:35:49
  package ideal; 
 
 import org.antlr.runtime.*;
@@ -53,9 +53,9 @@ public class IdealParser extends DebugParser {
     // delegators
 
     public static final String[] ruleNames = new String[] {
-        "invalidRule", "number", "mult", "term", "negation", "relation", 
-        "add", "program", "assignment", "function", "synpred2_Ideal", "arg", 
-        "synpred1_Ideal", "string", "args", "unary", "expression", "statement"
+        "invalidRule", "args", "number", "add", "unary", "program", "assignment", 
+        "statement", "function", "term", "relation", "synpred2_Ideal", "synpred1_Ideal", 
+        "expression", "mult", "arg", "string", "negation"
     };
      
         public int ruleLevel = 0;
@@ -151,7 +151,7 @@ public class IdealParser extends DebugParser {
 
                 int LA1_0 = input.LA(1);
 
-                if ( ((LA1_0>=ID && LA1_0<=ATOM)) ) {
+                if ( ((LA1_0>=ID && LA1_0<=INTEGER)||LA1_0==16||(LA1_0>=20 && LA1_0<=22)) ) {
                     alt1=1;
                 }
 
@@ -225,7 +225,7 @@ public class IdealParser extends DebugParser {
     };
 
     // $ANTLR start "function"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:1: function : ID '(' args ')' '->' ( expression | statement ) ( ',' ( expression | statement ) )* ;
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:1: function : ID '(' args ')' '->' statement ( ',' statement )* ;
     public final IdealParser.function_return function() throws RecognitionException {
         IdealParser.function_return retval = new IdealParser.function_return();
         retval.start = input.LT(1);
@@ -236,23 +236,19 @@ public class IdealParser extends DebugParser {
         Token char_literal4=null;
         Token char_literal6=null;
         Token string_literal7=null;
-        Token char_literal10=null;
+        Token char_literal9=null;
         IdealParser.args_return args5 = null;
 
-        IdealParser.expression_return expression8 = null;
+        IdealParser.statement_return statement8 = null;
 
-        IdealParser.statement_return statement9 = null;
-
-        IdealParser.expression_return expression11 = null;
-
-        IdealParser.statement_return statement12 = null;
+        IdealParser.statement_return statement10 = null;
 
 
         Object ID3_tree=null;
         Object char_literal4_tree=null;
         Object char_literal6_tree=null;
         Object string_literal7_tree=null;
-        Object char_literal10_tree=null;
+        Object char_literal9_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "function");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -260,10 +256,10 @@ public class IdealParser extends DebugParser {
         dbg.location(14, 1);
 
         try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:10: ( ID '(' args ')' '->' ( expression | statement ) ( ',' ( expression | statement ) )* )
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:10: ( ID '(' args ')' '->' statement ( ',' statement )* )
             dbg.enterAlt(1);
 
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:12: ID '(' args ')' '->' ( expression | statement ) ( ',' ( expression | statement ) )*
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:12: ID '(' args ')' '->' statement ( ',' statement )*
             {
             root_0 = (Object)adaptor.nil();
 
@@ -299,192 +295,58 @@ public class IdealParser extends DebugParser {
             adaptor.addChild(root_0, string_literal7_tree);
             }
             dbg.location(14,33);
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:33: ( expression | statement )
-            int alt2=2;
+            pushFollow(FOLLOW_statement_in_function79);
+            statement8=statement();
+
+            state._fsp--;
+            if (state.failed) return retval;
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, statement8.getTree());
+            dbg.location(14,43);
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:43: ( ',' statement )*
             try { dbg.enterSubRule(2);
-            try { dbg.enterDecision(2);
 
-            switch ( input.LA(1) ) {
-            case UNICODE_STRING:
-            case HEX_NUMBER:
-            case INTEGER:
-            case 16:
-            case 20:
-            case 21:
-            case 22:
-                {
-                alt2=1;
-                }
-                break;
-            case ID:
-                {
-                alt2=1;
-                }
-                break;
-            case ATOM:
-                {
-                alt2=2;
-                }
-                break;
-            default:
-                if (state.backtracking>0) {state.failed=true; return retval;}
-                NoViableAltException nvae =
-                    new NoViableAltException("", 2, 0, input);
-
-                dbg.recognitionException(nvae);
-                throw nvae;
-            }
-
-            } finally {dbg.exitDecision(2);}
-
-            switch (alt2) {
-                case 1 :
-                    dbg.enterAlt(1);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:34: expression
-                    {
-                    dbg.location(14,34);
-                    pushFollow(FOLLOW_expression_in_function80);
-                    expression8=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression8.getTree());
-
-                    }
-                    break;
-                case 2 :
-                    dbg.enterAlt(2);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:47: statement
-                    {
-                    dbg.location(14,47);
-                    pushFollow(FOLLOW_statement_in_function84);
-                    statement9=statement();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement9.getTree());
-
-                    }
-                    break;
-
-            }
-            } finally {dbg.exitSubRule(2);}
-
-            dbg.location(14,58);
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:58: ( ',' ( expression | statement ) )*
-            try { dbg.enterSubRule(4);
-
-            loop4:
+            loop2:
             do {
-                int alt4=2;
-                try { dbg.enterDecision(4);
+                int alt2=2;
+                try { dbg.enterDecision(2);
 
-                int LA4_0 = input.LA(1);
+                int LA2_0 = input.LA(1);
 
-                if ( (LA4_0==19) ) {
-                    alt4=1;
+                if ( (LA2_0==19) ) {
+                    alt2=1;
                 }
 
 
-                } finally {dbg.exitDecision(4);}
+                } finally {dbg.exitDecision(2);}
 
-                switch (alt4) {
+                switch (alt2) {
             	case 1 :
             	    dbg.enterAlt(1);
 
-            	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:59: ',' ( expression | statement )
+            	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:44: ',' statement
             	    {
-            	    dbg.location(14,59);
-            	    char_literal10=(Token)match(input,19,FOLLOW_19_in_function88); if (state.failed) return retval;
+            	    dbg.location(14,44);
+            	    char_literal9=(Token)match(input,19,FOLLOW_19_in_function82); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal10_tree = (Object)adaptor.create(char_literal10);
-            	    adaptor.addChild(root_0, char_literal10_tree);
+            	    char_literal9_tree = (Object)adaptor.create(char_literal9);
+            	    adaptor.addChild(root_0, char_literal9_tree);
             	    }
-            	    dbg.location(14,63);
-            	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:63: ( expression | statement )
-            	    int alt3=2;
-            	    try { dbg.enterSubRule(3);
-            	    try { dbg.enterDecision(3);
+            	    dbg.location(14,48);
+            	    pushFollow(FOLLOW_statement_in_function84);
+            	    statement10=statement();
 
-            	    switch ( input.LA(1) ) {
-            	    case UNICODE_STRING:
-            	    case HEX_NUMBER:
-            	    case INTEGER:
-            	    case 16:
-            	    case 20:
-            	    case 21:
-            	    case 22:
-            	        {
-            	        alt3=1;
-            	        }
-            	        break;
-            	    case ID:
-            	        {
-            	        alt3=1;
-            	        }
-            	        break;
-            	    case ATOM:
-            	        {
-            	        alt3=2;
-            	        }
-            	        break;
-            	    default:
-            	        if (state.backtracking>0) {state.failed=true; return retval;}
-            	        NoViableAltException nvae =
-            	            new NoViableAltException("", 3, 0, input);
-
-            	        dbg.recognitionException(nvae);
-            	        throw nvae;
-            	    }
-
-            	    } finally {dbg.exitDecision(3);}
-
-            	    switch (alt3) {
-            	        case 1 :
-            	            dbg.enterAlt(1);
-
-            	            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:64: expression
-            	            {
-            	            dbg.location(14,64);
-            	            pushFollow(FOLLOW_expression_in_function91);
-            	            expression11=expression();
-
-            	            state._fsp--;
-            	            if (state.failed) return retval;
-            	            if ( state.backtracking==0 ) adaptor.addChild(root_0, expression11.getTree());
-
-            	            }
-            	            break;
-            	        case 2 :
-            	            dbg.enterAlt(2);
-
-            	            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:14:77: statement
-            	            {
-            	            dbg.location(14,77);
-            	            pushFollow(FOLLOW_statement_in_function95);
-            	            statement12=statement();
-
-            	            state._fsp--;
-            	            if (state.failed) return retval;
-            	            if ( state.backtracking==0 ) adaptor.addChild(root_0, statement12.getTree());
-
-            	            }
-            	            break;
-
-            	    }
-            	    } finally {dbg.exitSubRule(3);}
-
+            	    state._fsp--;
+            	    if (state.failed) return retval;
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, statement10.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop4;
+            	    break loop2;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(4);}
+            } finally {dbg.exitSubRule(2);}
 
 
             }
@@ -505,7 +367,7 @@ public class IdealParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(14, 90);
+        dbg.location(14, 60);
 
         }
         finally {
@@ -531,13 +393,13 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token char_literal14=null;
+        Token char_literal12=null;
+        IdealParser.arg_return arg11 = null;
+
         IdealParser.arg_return arg13 = null;
 
-        IdealParser.arg_return arg15 = null;
 
-
-        Object char_literal14_tree=null;
+        Object char_literal12_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "args");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -553,58 +415,58 @@ public class IdealParser extends DebugParser {
             root_0 = (Object)adaptor.nil();
 
             dbg.location(16,8);
-            pushFollow(FOLLOW_arg_in_args108);
-            arg13=arg();
+            pushFollow(FOLLOW_arg_in_args96);
+            arg11=arg();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, arg13.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, arg11.getTree());
             dbg.location(16,12);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:16:12: ( ',' arg )*
-            try { dbg.enterSubRule(5);
+            try { dbg.enterSubRule(3);
 
-            loop5:
+            loop3:
             do {
-                int alt5=2;
-                try { dbg.enterDecision(5);
+                int alt3=2;
+                try { dbg.enterDecision(3);
 
-                int LA5_0 = input.LA(1);
+                int LA3_0 = input.LA(1);
 
-                if ( (LA5_0==19) ) {
-                    alt5=1;
+                if ( (LA3_0==19) ) {
+                    alt3=1;
                 }
 
 
-                } finally {dbg.exitDecision(5);}
+                } finally {dbg.exitDecision(3);}
 
-                switch (alt5) {
+                switch (alt3) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:16:13: ',' arg
             	    {
             	    dbg.location(16,13);
-            	    char_literal14=(Token)match(input,19,FOLLOW_19_in_args111); if (state.failed) return retval;
+            	    char_literal12=(Token)match(input,19,FOLLOW_19_in_args99); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal14_tree = (Object)adaptor.create(char_literal14);
-            	    adaptor.addChild(root_0, char_literal14_tree);
+            	    char_literal12_tree = (Object)adaptor.create(char_literal12);
+            	    adaptor.addChild(root_0, char_literal12_tree);
             	    }
             	    dbg.location(16,17);
-            	    pushFollow(FOLLOW_arg_in_args113);
-            	    arg15=arg();
+            	    pushFollow(FOLLOW_arg_in_args101);
+            	    arg13=arg();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, arg15.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, arg13.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop5;
+            	    break loop3;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(5);}
+            } finally {dbg.exitSubRule(3);}
 
 
             }
@@ -644,18 +506,18 @@ public class IdealParser extends DebugParser {
     };
 
     // $ANTLR start "arg"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:1: arg : ( ID | expression );
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:1: arg : ( ( ID )=> ID | expression );
     public final IdealParser.arg_return arg() throws RecognitionException {
         IdealParser.arg_return retval = new IdealParser.arg_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        Token ID16=null;
-        IdealParser.expression_return expression17 = null;
+        Token ID14=null;
+        IdealParser.expression_return expression15 = null;
 
 
-        Object ID16_tree=null;
+        Object ID14_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "arg");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -663,41 +525,56 @@ public class IdealParser extends DebugParser {
         dbg.location(18, 1);
 
         try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:5: ( ID | expression )
-            int alt6=2;
-            try { dbg.enterDecision(6);
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:5: ( ( ID )=> ID | expression )
+            int alt4=2;
+            try { dbg.enterDecision(4);
 
-            int LA6_0 = input.LA(1);
+            int LA4_0 = input.LA(1);
 
-            if ( (LA6_0==ID) ) {
-                alt6=1;
+            if ( (LA4_0==ID) ) {
+                int LA4_1 = input.LA(2);
+
+                if ( (synpred1_Ideal()) ) {
+                    alt4=1;
+                }
+                else if ( (true) ) {
+                    alt4=2;
+                }
+                else {
+                    if (state.backtracking>0) {state.failed=true; return retval;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 4, 1, input);
+
+                    dbg.recognitionException(nvae);
+                    throw nvae;
+                }
             }
-            else if ( ((LA6_0>=UNICODE_STRING && LA6_0<=INTEGER)||LA6_0==16||(LA6_0>=20 && LA6_0<=22)) ) {
-                alt6=2;
+            else if ( ((LA4_0>=UNICODE_STRING && LA4_0<=INTEGER)||LA4_0==16||(LA4_0>=20 && LA4_0<=22)) ) {
+                alt4=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 0, input);
+                    new NoViableAltException("", 4, 0, input);
 
                 dbg.recognitionException(nvae);
                 throw nvae;
             }
-            } finally {dbg.exitDecision(6);}
+            } finally {dbg.exitDecision(4);}
 
-            switch (alt6) {
+            switch (alt4) {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:7: ID
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:7: ( ID )=> ID
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(18,7);
-                    ID16=(Token)match(input,ID,FOLLOW_ID_in_arg125); if (state.failed) return retval;
+                    dbg.location(18,14);
+                    ID14=(Token)match(input,ID,FOLLOW_ID_in_arg118); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
-                    ID16_tree = (Object)adaptor.create(ID16);
-                    adaptor.addChild(root_0, ID16_tree);
+                    ID14_tree = (Object)adaptor.create(ID14);
+                    adaptor.addChild(root_0, ID14_tree);
                     }
 
                     }
@@ -705,17 +582,17 @@ public class IdealParser extends DebugParser {
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:12: expression
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:19: expression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(18,12);
-                    pushFollow(FOLLOW_expression_in_arg129);
-                    expression17=expression();
+                    dbg.location(18,19);
+                    pushFollow(FOLLOW_expression_in_arg122);
+                    expression15=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression17.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression15.getTree());
 
                     }
                     break;
@@ -737,7 +614,7 @@ public class IdealParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(18, 22);
+        dbg.location(18, 29);
 
         }
         finally {
@@ -756,18 +633,22 @@ public class IdealParser extends DebugParser {
     };
 
     // $ANTLR start "statement"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:1: statement : ( function | assignment );
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:1: statement : ( ATOM | expression | assignment | function );
     public final IdealParser.statement_return statement() throws RecognitionException {
         IdealParser.statement_return retval = new IdealParser.statement_return();
         retval.start = input.LT(1);
 
         Object root_0 = null;
 
-        IdealParser.function_return function18 = null;
+        Token ATOM16=null;
+        IdealParser.expression_return expression17 = null;
 
-        IdealParser.assignment_return assignment19 = null;
+        IdealParser.assignment_return assignment18 = null;
+
+        IdealParser.function_return function19 = null;
 
 
+        Object ATOM16_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "statement");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -775,75 +656,162 @@ public class IdealParser extends DebugParser {
         dbg.location(20, 1);
 
         try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:11: ( function | assignment )
-            int alt7=2;
-            try { dbg.enterDecision(7);
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:11: ( ATOM | expression | assignment | function )
+            int alt5=4;
+            try { dbg.enterDecision(5);
 
-            int LA7_0 = input.LA(1);
+            switch ( input.LA(1) ) {
+            case ATOM:
+                {
+                int LA5_1 = input.LA(2);
 
-            if ( (LA7_0==ID) ) {
-                int LA7_1 = input.LA(2);
-
-                if ( (LA7_1==16) ) {
-                    alt7=1;
+                if ( (LA5_1==18) ) {
+                    alt5=3;
                 }
-                else if ( (LA7_1==18) ) {
-                    alt7=2;
+                else if ( (LA5_1==15||LA5_1==19) ) {
+                    alt5=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 7, 1, input);
+                        new NoViableAltException("", 5, 1, input);
 
                     dbg.recognitionException(nvae);
                     throw nvae;
                 }
-            }
-            else if ( (LA7_0==ATOM) ) {
-                alt7=2;
-            }
-            else {
+                }
+                break;
+            case UNICODE_STRING:
+            case HEX_NUMBER:
+            case INTEGER:
+            case 16:
+            case 20:
+            case 21:
+            case 22:
+                {
+                alt5=2;
+                }
+                break;
+            case ID:
+                {
+                switch ( input.LA(2) ) {
+                case 18:
+                    {
+                    alt5=3;
+                    }
+                    break;
+                case 16:
+                    {
+                    alt5=4;
+                    }
+                    break;
+                case 15:
+                case 19:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 33:
+                case 34:
+                    {
+                    alt5=2;
+                    }
+                    break;
+                default:
+                    if (state.backtracking>0) {state.failed=true; return retval;}
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 5, 3, input);
+
+                    dbg.recognitionException(nvae);
+                    throw nvae;
+                }
+
+                }
+                break;
+            default:
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 7, 0, input);
+                    new NoViableAltException("", 5, 0, input);
 
                 dbg.recognitionException(nvae);
                 throw nvae;
             }
-            } finally {dbg.exitDecision(7);}
 
-            switch (alt7) {
+            } finally {dbg.exitDecision(5);}
+
+            switch (alt5) {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:13: function
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:20:13: ATOM
                     {
                     root_0 = (Object)adaptor.nil();
 
                     dbg.location(20,13);
-                    pushFollow(FOLLOW_function_in_statement137);
-                    function18=function();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, function18.getTree());
+                    ATOM16=(Token)match(input,ATOM,FOLLOW_ATOM_in_statement130); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    ATOM16_tree = (Object)adaptor.create(ATOM16);
+                    adaptor.addChild(root_0, ATOM16_tree);
+                    }
 
                     }
                     break;
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:21:13: assignment
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:21:6: expression
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(21,13);
-                    pushFollow(FOLLOW_assignment_in_statement151);
-                    assignment19=assignment();
+                    dbg.location(21,6);
+                    pushFollow(FOLLOW_expression_in_statement137);
+                    expression17=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, assignment19.getTree());
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression17.getTree());
+
+                    }
+                    break;
+                case 3 :
+                    dbg.enterAlt(3);
+
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:22:13: assignment
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    dbg.location(22,13);
+                    pushFollow(FOLLOW_assignment_in_statement151);
+                    assignment18=assignment();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, assignment18.getTree());
+
+                    }
+                    break;
+                case 4 :
+                    dbg.enterAlt(4);
+
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:23:13: function
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    dbg.location(23,13);
+                    pushFollow(FOLLOW_function_in_statement165);
+                    function19=function();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, function19.getTree());
 
                     }
                     break;
@@ -865,7 +833,7 @@ public class IdealParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(22, 11);
+        dbg.location(24, 11);
 
         }
         finally {
@@ -884,7 +852,7 @@ public class IdealParser extends DebugParser {
     };
 
     // $ANTLR start "assignment"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:24:1: assignment : ( ID '->' expression | ATOM '->' expression | ATOM );
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:26:1: assignment : ( ID '->' expression | ATOM '->' ( string | number ) );
     public final IdealParser.assignment_return assignment() throws RecognitionException {
         IdealParser.assignment_return retval = new IdealParser.assignment_return();
         retval.start = input.LT(1);
@@ -895,40 +863,333 @@ public class IdealParser extends DebugParser {
         Token string_literal21=null;
         Token ATOM23=null;
         Token string_literal24=null;
-        Token ATOM26=null;
         IdealParser.expression_return expression22 = null;
 
-        IdealParser.expression_return expression25 = null;
+        IdealParser.string_return string25 = null;
+
+        IdealParser.number_return number26 = null;
 
 
         Object ID20_tree=null;
         Object string_literal21_tree=null;
         Object ATOM23_tree=null;
         Object string_literal24_tree=null;
-        Object ATOM26_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "assignment");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(24, 1);
+        dbg.location(26, 1);
 
         try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:24:12: ( ID '->' expression | ATOM '->' expression | ATOM )
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:26:12: ( ID '->' expression | ATOM '->' ( string | number ) )
+            int alt7=2;
+            try { dbg.enterDecision(7);
+
+            int LA7_0 = input.LA(1);
+
+            if ( (LA7_0==ID) ) {
+                alt7=1;
+            }
+            else if ( (LA7_0==ATOM) ) {
+                alt7=2;
+            }
+            else {
+                if (state.backtracking>0) {state.failed=true; return retval;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 7, 0, input);
+
+                dbg.recognitionException(nvae);
+                throw nvae;
+            }
+            } finally {dbg.exitDecision(7);}
+
+            switch (alt7) {
+                case 1 :
+                    dbg.enterAlt(1);
+
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:26:14: ID '->' expression
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    dbg.location(26,14);
+                    ID20=(Token)match(input,ID,FOLLOW_ID_in_assignment184); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    ID20_tree = (Object)adaptor.create(ID20);
+                    adaptor.addChild(root_0, ID20_tree);
+                    }
+                    dbg.location(26,17);
+                    string_literal21=(Token)match(input,18,FOLLOW_18_in_assignment186); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal21_tree = (Object)adaptor.create(string_literal21);
+                    adaptor.addChild(root_0, string_literal21_tree);
+                    }
+                    dbg.location(26,22);
+                    pushFollow(FOLLOW_expression_in_assignment188);
+                    expression22=expression();
+
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression22.getTree());
+
+                    }
+                    break;
+                case 2 :
+                    dbg.enterAlt(2);
+
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:27:14: ATOM '->' ( string | number )
+                    {
+                    root_0 = (Object)adaptor.nil();
+
+                    dbg.location(27,14);
+                    ATOM23=(Token)match(input,ATOM,FOLLOW_ATOM_in_assignment203); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    ATOM23_tree = (Object)adaptor.create(ATOM23);
+                    adaptor.addChild(root_0, ATOM23_tree);
+                    }
+                    dbg.location(27,19);
+                    string_literal24=(Token)match(input,18,FOLLOW_18_in_assignment205); if (state.failed) return retval;
+                    if ( state.backtracking==0 ) {
+                    string_literal24_tree = (Object)adaptor.create(string_literal24);
+                    adaptor.addChild(root_0, string_literal24_tree);
+                    }
+                    dbg.location(27,24);
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:27:24: ( string | number )
+                    int alt6=2;
+                    try { dbg.enterSubRule(6);
+                    try { dbg.enterDecision(6);
+
+                    int LA6_0 = input.LA(1);
+
+                    if ( (LA6_0==UNICODE_STRING) ) {
+                        alt6=1;
+                    }
+                    else if ( ((LA6_0>=HEX_NUMBER && LA6_0<=INTEGER)) ) {
+                        alt6=2;
+                    }
+                    else {
+                        if (state.backtracking>0) {state.failed=true; return retval;}
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 6, 0, input);
+
+                        dbg.recognitionException(nvae);
+                        throw nvae;
+                    }
+                    } finally {dbg.exitDecision(6);}
+
+                    switch (alt6) {
+                        case 1 :
+                            dbg.enterAlt(1);
+
+                            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:27:26: string
+                            {
+                            dbg.location(27,26);
+                            pushFollow(FOLLOW_string_in_assignment209);
+                            string25=string();
+
+                            state._fsp--;
+                            if (state.failed) return retval;
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, string25.getTree());
+
+                            }
+                            break;
+                        case 2 :
+                            dbg.enterAlt(2);
+
+                            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:27:35: number
+                            {
+                            dbg.location(27,35);
+                            pushFollow(FOLLOW_number_in_assignment213);
+                            number26=number();
+
+                            state._fsp--;
+                            if (state.failed) return retval;
+                            if ( state.backtracking==0 ) adaptor.addChild(root_0, number26.getTree());
+
+                            }
+                            break;
+
+                    }
+                    } finally {dbg.exitSubRule(6);}
+
+
+                    }
+                    break;
+
+            }
+            retval.stop = input.LT(-1);
+
+            if ( state.backtracking==0 ) {
+
+            retval.tree = (Object)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+    	retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+
+        }
+        finally {
+        }
+        dbg.location(28, 12);
+
+        }
+        finally {
+            dbg.exitRule(getGrammarFileName(), "assignment");
+            decRuleLevel();
+            if ( getRuleLevel()==0 ) {dbg.terminate();}
+        }
+
+        return retval;
+    }
+    // $ANTLR end "assignment"
+
+    public static class string_return extends ParserRuleReturnScope {
+        Object tree;
+        public Object getTree() { return tree; }
+    };
+
+    // $ANTLR start "string"
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:30:1: string : UNICODE_STRING ;
+    public final IdealParser.string_return string() throws RecognitionException {
+        IdealParser.string_return retval = new IdealParser.string_return();
+        retval.start = input.LT(1);
+
+        Object root_0 = null;
+
+        Token UNICODE_STRING27=null;
+
+        Object UNICODE_STRING27_tree=null;
+
+        try { dbg.enterRule(getGrammarFileName(), "string");
+        if ( getRuleLevel()==0 ) {dbg.commence();}
+        incRuleLevel();
+        dbg.location(30, 1);
+
+        try {
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:30:8: ( UNICODE_STRING )
+            dbg.enterAlt(1);
+
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:30:10: UNICODE_STRING
+            {
+            root_0 = (Object)adaptor.nil();
+
+            dbg.location(30,10);
+            UNICODE_STRING27=(Token)match(input,UNICODE_STRING,FOLLOW_UNICODE_STRING_in_string236); if (state.failed) return retval;
+            if ( state.backtracking==0 ) {
+            UNICODE_STRING27_tree = (Object)adaptor.create(UNICODE_STRING27);
+            adaptor.addChild(root_0, UNICODE_STRING27_tree);
+            }
+
+            }
+
+            retval.stop = input.LT(-1);
+
+            if ( state.backtracking==0 ) {
+
+            retval.tree = (Object)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+    	retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+
+        }
+        finally {
+        }
+        dbg.location(30, 24);
+
+        }
+        finally {
+            dbg.exitRule(getGrammarFileName(), "string");
+            decRuleLevel();
+            if ( getRuleLevel()==0 ) {dbg.terminate();}
+        }
+
+        return retval;
+    }
+    // $ANTLR end "string"
+
+    public static class number_return extends ParserRuleReturnScope {
+        Object tree;
+        public Object getTree() { return tree; }
+    };
+
+    // $ANTLR start "number"
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:1: number : ( HEX_NUMBER | ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER | INTEGER );
+    public final IdealParser.number_return number() throws RecognitionException {
+        IdealParser.number_return retval = new IdealParser.number_return();
+        retval.start = input.LT(1);
+
+        Object root_0 = null;
+
+        Token HEX_NUMBER28=null;
+        Token INTEGER29=null;
+        Token char_literal30=null;
+        Token INTEGER31=null;
+        Token INTEGER32=null;
+
+        Object HEX_NUMBER28_tree=null;
+        Object INTEGER29_tree=null;
+        Object char_literal30_tree=null;
+        Object INTEGER31_tree=null;
+        Object INTEGER32_tree=null;
+
+        try { dbg.enterRule(getGrammarFileName(), "number");
+        if ( getRuleLevel()==0 ) {dbg.commence();}
+        incRuleLevel();
+        dbg.location(32, 1);
+
+        try {
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:8: ( HEX_NUMBER | ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER | INTEGER )
             int alt8=3;
             try { dbg.enterDecision(8);
 
             int LA8_0 = input.LA(1);
 
-            if ( (LA8_0==ID) ) {
+            if ( (LA8_0==HEX_NUMBER) ) {
                 alt8=1;
             }
-            else if ( (LA8_0==ATOM) ) {
+            else if ( (LA8_0==INTEGER) ) {
                 int LA8_2 = input.LA(2);
 
-                if ( (LA8_2==18) ) {
-                    alt8=2;
+                if ( (LA8_2==15) ) {
+                    int LA8_3 = input.LA(3);
+
+                    if ( (LA8_3==INTEGER) ) {
+                        int LA8_5 = input.LA(4);
+
+                        if ( (synpred2_Ideal()) ) {
+                            alt8=2;
+                        }
+                        else if ( (true) ) {
+                            alt8=3;
+                        }
+                        else {
+                            if (state.backtracking>0) {state.failed=true; return retval;}
+                            NoViableAltException nvae =
+                                new NoViableAltException("", 8, 5, input);
+
+                            dbg.recognitionException(nvae);
+                            throw nvae;
+                        }
+                    }
+                    else if ( (LA8_3==EOF||(LA8_3>=ID && LA8_3<=HEX_NUMBER)||LA8_3==16||(LA8_3>=20 && LA8_3<=22)) ) {
+                        alt8=3;
+                    }
+                    else {
+                        if (state.backtracking>0) {state.failed=true; return retval;}
+                        NoViableAltException nvae =
+                            new NoViableAltException("", 8, 3, input);
+
+                        dbg.recognitionException(nvae);
+                        throw nvae;
+                    }
                 }
-                else if ( (LA8_2==15||LA8_2==19) ) {
+                else if ( (LA8_2==17||LA8_2==19||(LA8_2>=21 && LA8_2<=34)) ) {
                     alt8=3;
                 }
                 else {
@@ -954,269 +1215,12 @@ public class IdealParser extends DebugParser {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:24:14: ID '->' expression
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:10: HEX_NUMBER
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(24,14);
-                    ID20=(Token)match(input,ID,FOLLOW_ID_in_assignment171); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    ID20_tree = (Object)adaptor.create(ID20);
-                    adaptor.addChild(root_0, ID20_tree);
-                    }
-                    dbg.location(24,17);
-                    string_literal21=(Token)match(input,18,FOLLOW_18_in_assignment173); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal21_tree = (Object)adaptor.create(string_literal21);
-                    adaptor.addChild(root_0, string_literal21_tree);
-                    }
-                    dbg.location(24,22);
-                    pushFollow(FOLLOW_expression_in_assignment175);
-                    expression22=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression22.getTree());
-
-                    }
-                    break;
-                case 2 :
-                    dbg.enterAlt(2);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:25:14: ATOM '->' expression
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    dbg.location(25,14);
-                    ATOM23=(Token)match(input,ATOM,FOLLOW_ATOM_in_assignment190); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    ATOM23_tree = (Object)adaptor.create(ATOM23);
-                    adaptor.addChild(root_0, ATOM23_tree);
-                    }
-                    dbg.location(25,19);
-                    string_literal24=(Token)match(input,18,FOLLOW_18_in_assignment192); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal24_tree = (Object)adaptor.create(string_literal24);
-                    adaptor.addChild(root_0, string_literal24_tree);
-                    }
-                    dbg.location(25,24);
-                    pushFollow(FOLLOW_expression_in_assignment194);
-                    expression25=expression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, expression25.getTree());
-
-                    }
-                    break;
-                case 3 :
-                    dbg.enterAlt(3);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:26:14: ATOM
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    dbg.location(26,14);
-                    ATOM26=(Token)match(input,ATOM,FOLLOW_ATOM_in_assignment210); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    ATOM26_tree = (Object)adaptor.create(ATOM26);
-                    adaptor.addChild(root_0, ATOM26_tree);
-                    }
-
-                    }
-                    break;
-
-            }
-            retval.stop = input.LT(-1);
-
-            if ( state.backtracking==0 ) {
-
-            retval.tree = (Object)adaptor.rulePostProcessing(root_0);
-            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
-            }
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-    	retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
-
-        }
-        finally {
-        }
-        dbg.location(27, 12);
-
-        }
-        finally {
-            dbg.exitRule(getGrammarFileName(), "assignment");
-            decRuleLevel();
-            if ( getRuleLevel()==0 ) {dbg.terminate();}
-        }
-
-        return retval;
-    }
-    // $ANTLR end "assignment"
-
-    public static class string_return extends ParserRuleReturnScope {
-        Object tree;
-        public Object getTree() { return tree; }
-    };
-
-    // $ANTLR start "string"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:29:1: string : UNICODE_STRING ;
-    public final IdealParser.string_return string() throws RecognitionException {
-        IdealParser.string_return retval = new IdealParser.string_return();
-        retval.start = input.LT(1);
-
-        Object root_0 = null;
-
-        Token UNICODE_STRING27=null;
-
-        Object UNICODE_STRING27_tree=null;
-
-        try { dbg.enterRule(getGrammarFileName(), "string");
-        if ( getRuleLevel()==0 ) {dbg.commence();}
-        incRuleLevel();
-        dbg.location(29, 1);
-
-        try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:29:8: ( UNICODE_STRING )
-            dbg.enterAlt(1);
-
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:29:10: UNICODE_STRING
-            {
-            root_0 = (Object)adaptor.nil();
-
-            dbg.location(29,10);
-            UNICODE_STRING27=(Token)match(input,UNICODE_STRING,FOLLOW_UNICODE_STRING_in_string231); if (state.failed) return retval;
-            if ( state.backtracking==0 ) {
-            UNICODE_STRING27_tree = (Object)adaptor.create(UNICODE_STRING27);
-            adaptor.addChild(root_0, UNICODE_STRING27_tree);
-            }
-
-            }
-
-            retval.stop = input.LT(-1);
-
-            if ( state.backtracking==0 ) {
-
-            retval.tree = (Object)adaptor.rulePostProcessing(root_0);
-            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
-            }
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-    	retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
-
-        }
-        finally {
-        }
-        dbg.location(29, 24);
-
-        }
-        finally {
-            dbg.exitRule(getGrammarFileName(), "string");
-            decRuleLevel();
-            if ( getRuleLevel()==0 ) {dbg.terminate();}
-        }
-
-        return retval;
-    }
-    // $ANTLR end "string"
-
-    public static class number_return extends ParserRuleReturnScope {
-        Object tree;
-        public Object getTree() { return tree; }
-    };
-
-    // $ANTLR start "number"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:31:1: number : ( HEX_NUMBER | ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER | INTEGER );
-    public final IdealParser.number_return number() throws RecognitionException {
-        IdealParser.number_return retval = new IdealParser.number_return();
-        retval.start = input.LT(1);
-
-        Object root_0 = null;
-
-        Token HEX_NUMBER28=null;
-        Token INTEGER29=null;
-        Token char_literal30=null;
-        Token INTEGER31=null;
-        Token INTEGER32=null;
-
-        Object HEX_NUMBER28_tree=null;
-        Object INTEGER29_tree=null;
-        Object char_literal30_tree=null;
-        Object INTEGER31_tree=null;
-        Object INTEGER32_tree=null;
-
-        try { dbg.enterRule(getGrammarFileName(), "number");
-        if ( getRuleLevel()==0 ) {dbg.commence();}
-        incRuleLevel();
-        dbg.location(31, 1);
-
-        try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:31:8: ( HEX_NUMBER | ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER | INTEGER )
-            int alt9=3;
-            try { dbg.enterDecision(9);
-
-            int LA9_0 = input.LA(1);
-
-            if ( (LA9_0==HEX_NUMBER) ) {
-                alt9=1;
-            }
-            else if ( (LA9_0==INTEGER) ) {
-                int LA9_2 = input.LA(2);
-
-                if ( (LA9_2==15) ) {
-                    int LA9_3 = input.LA(3);
-
-                    if ( (LA9_3==INTEGER) && (synpred1_Ideal())) {
-                        alt9=2;
-                    }
-                    else if ( (LA9_3==EOF||(LA9_3>=ID && LA9_3<=ATOM)) ) {
-                        alt9=3;
-                    }
-                    else {
-                        if (state.backtracking>0) {state.failed=true; return retval;}
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 9, 3, input);
-
-                        dbg.recognitionException(nvae);
-                        throw nvae;
-                    }
-                }
-                else if ( (LA9_2==17||LA9_2==19||(LA9_2>=21 && LA9_2<=34)) ) {
-                    alt9=3;
-                }
-                else {
-                    if (state.backtracking>0) {state.failed=true; return retval;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 9, 2, input);
-
-                    dbg.recognitionException(nvae);
-                    throw nvae;
-                }
-            }
-            else {
-                if (state.backtracking>0) {state.failed=true; return retval;}
-                NoViableAltException nvae =
-                    new NoViableAltException("", 9, 0, input);
-
-                dbg.recognitionException(nvae);
-                throw nvae;
-            }
-            } finally {dbg.exitDecision(9);}
-
-            switch (alt9) {
-                case 1 :
-                    dbg.enterAlt(1);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:31:10: HEX_NUMBER
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    dbg.location(31,10);
-                    HEX_NUMBER28=(Token)match(input,HEX_NUMBER,FOLLOW_HEX_NUMBER_in_number240); if (state.failed) return retval;
+                    dbg.location(32,10);
+                    HEX_NUMBER28=(Token)match(input,HEX_NUMBER,FOLLOW_HEX_NUMBER_in_number245); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     HEX_NUMBER28_tree = (Object)adaptor.create(HEX_NUMBER28);
                     adaptor.addChild(root_0, HEX_NUMBER28_tree);
@@ -1227,24 +1231,24 @@ public class IdealParser extends DebugParser {
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:10: ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:33:10: ( INTEGER '.' INTEGER )=> INTEGER '.' INTEGER
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(32,34);
-                    INTEGER29=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number261); if (state.failed) return retval;
+                    dbg.location(33,34);
+                    INTEGER29=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number266); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     INTEGER29_tree = (Object)adaptor.create(INTEGER29);
                     adaptor.addChild(root_0, INTEGER29_tree);
                     }
-                    dbg.location(32,42);
-                    char_literal30=(Token)match(input,15,FOLLOW_15_in_number263); if (state.failed) return retval;
+                    dbg.location(33,42);
+                    char_literal30=(Token)match(input,15,FOLLOW_15_in_number268); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal30_tree = (Object)adaptor.create(char_literal30);
                     adaptor.addChild(root_0, char_literal30_tree);
                     }
-                    dbg.location(32,46);
-                    INTEGER31=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number265); if (state.failed) return retval;
+                    dbg.location(33,46);
+                    INTEGER31=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number270); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     INTEGER31_tree = (Object)adaptor.create(INTEGER31);
                     adaptor.addChild(root_0, INTEGER31_tree);
@@ -1255,12 +1259,12 @@ public class IdealParser extends DebugParser {
                 case 3 :
                     dbg.enterAlt(3);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:33:10: INTEGER
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:34:10: INTEGER
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(33,10);
-                    INTEGER32=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number276); if (state.failed) return retval;
+                    dbg.location(34,10);
+                    INTEGER32=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_number281); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     INTEGER32_tree = (Object)adaptor.create(INTEGER32);
                     adaptor.addChild(root_0, INTEGER32_tree);
@@ -1286,7 +1290,7 @@ public class IdealParser extends DebugParser {
         }
         finally {
         }
-        dbg.location(33, 17);
+        dbg.location(34, 17);
 
         }
         finally {
@@ -1305,7 +1309,7 @@ public class IdealParser extends DebugParser {
     };
 
     // $ANTLR start "term"
-    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:37:1: term : ( ( ID )=> ID | '(' expression ')' | number | string | ID '(' args ')' );
+    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:38:1: term : ( ID | '(' expression ')' | number | string );
     public final IdealParser.term_return term() throws RecognitionException {
         IdealParser.term_return retval = new IdealParser.term_return();
         retval.start = input.LT(1);
@@ -1315,54 +1319,69 @@ public class IdealParser extends DebugParser {
         Token ID33=null;
         Token char_literal34=null;
         Token char_literal36=null;
-        Token ID39=null;
-        Token char_literal40=null;
-        Token char_literal42=null;
         IdealParser.expression_return expression35 = null;
 
         IdealParser.number_return number37 = null;
 
         IdealParser.string_return string38 = null;
 
-        IdealParser.args_return args41 = null;
-
 
         Object ID33_tree=null;
         Object char_literal34_tree=null;
         Object char_literal36_tree=null;
-        Object ID39_tree=null;
-        Object char_literal40_tree=null;
-        Object char_literal42_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "term");
         if ( getRuleLevel()==0 ) {dbg.commence();}
         incRuleLevel();
-        dbg.location(37, 1);
+        dbg.location(38, 1);
 
         try {
-            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:37:6: ( ( ID )=> ID | '(' expression ')' | number | string | ID '(' args ')' )
-            int alt10=5;
-            try { dbg.enterDecision(10);
+            // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:38:6: ( ID | '(' expression ')' | number | string )
+            int alt9=4;
+            try { dbg.enterDecision(9);
 
-            try {
-                isCyclicDecision = true;
-                alt10 = dfa10.predict(input);
-            }
-            catch (NoViableAltException nvae) {
+            switch ( input.LA(1) ) {
+            case ID:
+                {
+                alt9=1;
+                }
+                break;
+            case 16:
+                {
+                alt9=2;
+                }
+                break;
+            case HEX_NUMBER:
+            case INTEGER:
+                {
+                alt9=3;
+                }
+                break;
+            case UNICODE_STRING:
+                {
+                alt9=4;
+                }
+                break;
+            default:
+                if (state.backtracking>0) {state.failed=true; return retval;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 9, 0, input);
+
                 dbg.recognitionException(nvae);
                 throw nvae;
             }
-            } finally {dbg.exitDecision(10);}
 
-            switch (alt10) {
+            } finally {dbg.exitDecision(9);}
+
+            switch (alt9) {
                 case 1 :
                     dbg.enterAlt(1);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:37:8: ( ID )=> ID
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:38:8: ID
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(37,15);
+                    dbg.location(38,8);
                     ID33=(Token)match(input,ID,FOLLOW_ID_in_term291); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     ID33_tree = (Object)adaptor.create(ID33);
@@ -1374,24 +1393,24 @@ public class IdealParser extends DebugParser {
                 case 2 :
                     dbg.enterAlt(2);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:38:7: '(' expression ')'
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:39:7: '(' expression ')'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(38,7);
+                    dbg.location(39,7);
                     char_literal34=(Token)match(input,16,FOLLOW_16_in_term300); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal34_tree = (Object)adaptor.create(char_literal34);
                     adaptor.addChild(root_0, char_literal34_tree);
                     }
-                    dbg.location(38,11);
+                    dbg.location(39,11);
                     pushFollow(FOLLOW_expression_in_term302);
                     expression35=expression();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, expression35.getTree());
-                    dbg.location(38,22);
+                    dbg.location(39,22);
                     char_literal36=(Token)match(input,17,FOLLOW_17_in_term304); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     char_literal36_tree = (Object)adaptor.create(char_literal36);
@@ -1403,11 +1422,11 @@ public class IdealParser extends DebugParser {
                 case 3 :
                     dbg.enterAlt(3);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:39:8: number
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:40:8: number
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(39,8);
+                    dbg.location(40,8);
                     pushFollow(FOLLOW_number_in_term315);
                     number37=number();
 
@@ -1420,52 +1439,17 @@ public class IdealParser extends DebugParser {
                 case 4 :
                     dbg.enterAlt(4);
 
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:40:8: string
+                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:41:8: string
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    dbg.location(40,8);
+                    dbg.location(41,8);
                     pushFollow(FOLLOW_string_in_term324);
                     string38=string();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, string38.getTree());
-
-                    }
-                    break;
-                case 5 :
-                    dbg.enterAlt(5);
-
-                    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:41:8: ID '(' args ')'
-                    {
-                    root_0 = (Object)adaptor.nil();
-
-                    dbg.location(41,8);
-                    ID39=(Token)match(input,ID,FOLLOW_ID_in_term333); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    ID39_tree = (Object)adaptor.create(ID39);
-                    adaptor.addChild(root_0, ID39_tree);
-                    }
-                    dbg.location(41,11);
-                    char_literal40=(Token)match(input,16,FOLLOW_16_in_term335); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal40_tree = (Object)adaptor.create(char_literal40);
-                    adaptor.addChild(root_0, char_literal40_tree);
-                    }
-                    dbg.location(41,15);
-                    pushFollow(FOLLOW_args_in_term337);
-                    args41=args();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) adaptor.addChild(root_0, args41.getTree());
-                    dbg.location(41,20);
-                    char_literal42=(Token)match(input,17,FOLLOW_17_in_term339); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal42_tree = (Object)adaptor.create(char_literal42);
-                    adaptor.addChild(root_0, char_literal42_tree);
-                    }
 
                     }
                     break;
@@ -1513,11 +1497,11 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token char_literal43=null;
-        IdealParser.term_return term44 = null;
+        Token char_literal39=null;
+        IdealParser.term_return term40 = null;
 
 
-        Object char_literal43_tree=null;
+        Object char_literal39_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "negation");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1534,51 +1518,51 @@ public class IdealParser extends DebugParser {
 
             dbg.location(44,12);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:44:12: ( '!' )*
-            try { dbg.enterSubRule(11);
+            try { dbg.enterSubRule(10);
 
-            loop11:
+            loop10:
             do {
-                int alt11=2;
-                try { dbg.enterDecision(11);
+                int alt10=2;
+                try { dbg.enterDecision(10);
 
-                int LA11_0 = input.LA(1);
+                int LA10_0 = input.LA(1);
 
-                if ( (LA11_0==20) ) {
-                    alt11=1;
+                if ( (LA10_0==20) ) {
+                    alt10=1;
                 }
 
 
-                } finally {dbg.exitDecision(11);}
+                } finally {dbg.exitDecision(10);}
 
-                switch (alt11) {
+                switch (alt10) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:44:12: '!'
             	    {
             	    dbg.location(44,12);
-            	    char_literal43=(Token)match(input,20,FOLLOW_20_in_negation353); if (state.failed) return retval;
+            	    char_literal39=(Token)match(input,20,FOLLOW_20_in_negation338); if (state.failed) return retval;
             	    if ( state.backtracking==0 ) {
-            	    char_literal43_tree = (Object)adaptor.create(char_literal43);
-            	    adaptor.addChild(root_0, char_literal43_tree);
+            	    char_literal39_tree = (Object)adaptor.create(char_literal39);
+            	    adaptor.addChild(root_0, char_literal39_tree);
             	    }
 
             	    }
             	    break;
 
             	default :
-            	    break loop11;
+            	    break loop10;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(11);}
+            } finally {dbg.exitSubRule(10);}
 
             dbg.location(44,17);
-            pushFollow(FOLLOW_term_in_negation356);
-            term44=term();
+            pushFollow(FOLLOW_term_in_negation341);
+            term40=term();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, term44.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, term40.getTree());
 
             }
 
@@ -1624,11 +1608,11 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token set45=null;
-        IdealParser.negation_return negation46 = null;
+        Token set41=null;
+        IdealParser.negation_return negation42 = null;
 
 
-        Object set45_tree=null;
+        Object set41_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "unary");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1645,33 +1629,33 @@ public class IdealParser extends DebugParser {
 
             dbg.location(46,9);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:46:9: ( '+' | '-' )*
-            try { dbg.enterSubRule(12);
+            try { dbg.enterSubRule(11);
 
-            loop12:
+            loop11:
             do {
-                int alt12=2;
-                try { dbg.enterDecision(12);
+                int alt11=2;
+                try { dbg.enterDecision(11);
 
-                int LA12_0 = input.LA(1);
+                int LA11_0 = input.LA(1);
 
-                if ( ((LA12_0>=21 && LA12_0<=22)) ) {
-                    alt12=1;
+                if ( ((LA11_0>=21 && LA11_0<=22)) ) {
+                    alt11=1;
                 }
 
 
-                } finally {dbg.exitDecision(12);}
+                } finally {dbg.exitDecision(11);}
 
-                switch (alt12) {
+                switch (alt11) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:
             	    {
             	    dbg.location(46,9);
-            	    set45=(Token)input.LT(1);
+            	    set41=(Token)input.LT(1);
             	    if ( (input.LA(1)>=21 && input.LA(1)<=22) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set45));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set41));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -1686,18 +1670,18 @@ public class IdealParser extends DebugParser {
             	    break;
 
             	default :
-            	    break loop12;
+            	    break loop11;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(12);}
+            } finally {dbg.exitSubRule(11);}
 
             dbg.location(46,20);
-            pushFollow(FOLLOW_negation_in_unary372);
-            negation46=negation();
+            pushFollow(FOLLOW_negation_in_unary357);
+            negation42=negation();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, negation46.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, negation42.getTree());
 
             }
 
@@ -1743,13 +1727,13 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token set48=null;
-        IdealParser.unary_return unary47 = null;
+        Token set44=null;
+        IdealParser.unary_return unary43 = null;
 
-        IdealParser.unary_return unary49 = null;
+        IdealParser.unary_return unary45 = null;
 
 
-        Object set48_tree=null;
+        Object set44_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "mult");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1765,41 +1749,41 @@ public class IdealParser extends DebugParser {
             root_0 = (Object)adaptor.nil();
 
             dbg.location(48,8);
-            pushFollow(FOLLOW_unary_in_mult380);
-            unary47=unary();
+            pushFollow(FOLLOW_unary_in_mult365);
+            unary43=unary();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, unary47.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, unary43.getTree());
             dbg.location(48,14);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:48:14: ( ( '*' | '/' | ( '%' | 'mod' ) ) unary )*
-            try { dbg.enterSubRule(13);
+            try { dbg.enterSubRule(12);
 
-            loop13:
+            loop12:
             do {
-                int alt13=2;
-                try { dbg.enterDecision(13);
+                int alt12=2;
+                try { dbg.enterDecision(12);
 
-                int LA13_0 = input.LA(1);
+                int LA12_0 = input.LA(1);
 
-                if ( ((LA13_0>=23 && LA13_0<=26)) ) {
-                    alt13=1;
+                if ( ((LA12_0>=23 && LA12_0<=26)) ) {
+                    alt12=1;
                 }
 
 
-                } finally {dbg.exitDecision(13);}
+                } finally {dbg.exitDecision(12);}
 
-                switch (alt13) {
+                switch (alt12) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:48:15: ( '*' | '/' | ( '%' | 'mod' ) ) unary
             	    {
             	    dbg.location(48,15);
-            	    set48=(Token)input.LT(1);
+            	    set44=(Token)input.LT(1);
             	    if ( (input.LA(1)>=23 && input.LA(1)<=26) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set48));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set44));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -1810,21 +1794,21 @@ public class IdealParser extends DebugParser {
             	    }
 
             	    dbg.location(48,42);
-            	    pushFollow(FOLLOW_unary_in_mult400);
-            	    unary49=unary();
+            	    pushFollow(FOLLOW_unary_in_mult385);
+            	    unary45=unary();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, unary49.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, unary45.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop13;
+            	    break loop12;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(13);}
+            } finally {dbg.exitSubRule(12);}
 
 
             }
@@ -1871,13 +1855,13 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token set51=null;
-        IdealParser.mult_return mult50 = null;
+        Token set47=null;
+        IdealParser.mult_return mult46 = null;
 
-        IdealParser.mult_return mult52 = null;
+        IdealParser.mult_return mult48 = null;
 
 
-        Object set51_tree=null;
+        Object set47_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "add");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -1893,41 +1877,41 @@ public class IdealParser extends DebugParser {
             root_0 = (Object)adaptor.nil();
 
             dbg.location(50,7);
-            pushFollow(FOLLOW_mult_in_add411);
-            mult50=mult();
+            pushFollow(FOLLOW_mult_in_add396);
+            mult46=mult();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, mult50.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, mult46.getTree());
             dbg.location(50,12);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:50:12: ( ( '+' | '-' ) mult )*
-            try { dbg.enterSubRule(14);
+            try { dbg.enterSubRule(13);
 
-            loop14:
+            loop13:
             do {
-                int alt14=2;
-                try { dbg.enterDecision(14);
+                int alt13=2;
+                try { dbg.enterDecision(13);
 
-                int LA14_0 = input.LA(1);
+                int LA13_0 = input.LA(1);
 
-                if ( ((LA14_0>=21 && LA14_0<=22)) ) {
-                    alt14=1;
+                if ( ((LA13_0>=21 && LA13_0<=22)) ) {
+                    alt13=1;
                 }
 
 
-                } finally {dbg.exitDecision(14);}
+                } finally {dbg.exitDecision(13);}
 
-                switch (alt14) {
+                switch (alt13) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:50:13: ( '+' | '-' ) mult
             	    {
             	    dbg.location(50,13);
-            	    set51=(Token)input.LT(1);
+            	    set47=(Token)input.LT(1);
             	    if ( (input.LA(1)>=21 && input.LA(1)<=22) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set51));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set47));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -1938,21 +1922,21 @@ public class IdealParser extends DebugParser {
             	    }
 
             	    dbg.location(50,25);
-            	    pushFollow(FOLLOW_mult_in_add422);
-            	    mult52=mult();
+            	    pushFollow(FOLLOW_mult_in_add407);
+            	    mult48=mult();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, mult52.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, mult48.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop14;
+            	    break loop13;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(14);}
+            } finally {dbg.exitSubRule(13);}
 
 
             }
@@ -1999,13 +1983,13 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token set54=null;
-        IdealParser.add_return add53 = null;
+        Token set50=null;
+        IdealParser.add_return add49 = null;
 
-        IdealParser.add_return add55 = null;
+        IdealParser.add_return add51 = null;
 
 
-        Object set54_tree=null;
+        Object set50_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "relation");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -2021,41 +2005,41 @@ public class IdealParser extends DebugParser {
             root_0 = (Object)adaptor.nil();
 
             dbg.location(52,12);
-            pushFollow(FOLLOW_add_in_relation433);
-            add53=add();
+            pushFollow(FOLLOW_add_in_relation418);
+            add49=add();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, add53.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, add49.getTree());
             dbg.location(52,16);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:52:16: ( ( '=' | '!=' | '<' | '<=' | '>=' | '>' ) add )*
-            try { dbg.enterSubRule(15);
+            try { dbg.enterSubRule(14);
 
-            loop15:
+            loop14:
             do {
-                int alt15=2;
-                try { dbg.enterDecision(15);
+                int alt14=2;
+                try { dbg.enterDecision(14);
 
-                int LA15_0 = input.LA(1);
+                int LA14_0 = input.LA(1);
 
-                if ( ((LA15_0>=27 && LA15_0<=32)) ) {
-                    alt15=1;
+                if ( ((LA14_0>=27 && LA14_0<=32)) ) {
+                    alt14=1;
                 }
 
 
-                } finally {dbg.exitDecision(15);}
+                } finally {dbg.exitDecision(14);}
 
-                switch (alt15) {
+                switch (alt14) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:52:17: ( '=' | '!=' | '<' | '<=' | '>=' | '>' ) add
             	    {
             	    dbg.location(52,17);
-            	    set54=(Token)input.LT(1);
+            	    set50=(Token)input.LT(1);
             	    if ( (input.LA(1)>=27 && input.LA(1)<=32) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set54));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set50));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -2066,21 +2050,21 @@ public class IdealParser extends DebugParser {
             	    }
 
             	    dbg.location(52,56);
-            	    pushFollow(FOLLOW_add_in_relation460);
-            	    add55=add();
+            	    pushFollow(FOLLOW_add_in_relation445);
+            	    add51=add();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, add55.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, add51.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop15;
+            	    break loop14;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(15);}
+            } finally {dbg.exitSubRule(14);}
 
 
             }
@@ -2127,13 +2111,13 @@ public class IdealParser extends DebugParser {
 
         Object root_0 = null;
 
-        Token set57=null;
-        IdealParser.relation_return relation56 = null;
+        Token set53=null;
+        IdealParser.relation_return relation52 = null;
 
-        IdealParser.relation_return relation58 = null;
+        IdealParser.relation_return relation54 = null;
 
 
-        Object set57_tree=null;
+        Object set53_tree=null;
 
         try { dbg.enterRule(getGrammarFileName(), "expression");
         if ( getRuleLevel()==0 ) {dbg.commence();}
@@ -2149,41 +2133,41 @@ public class IdealParser extends DebugParser {
             root_0 = (Object)adaptor.nil();
 
             dbg.location(54,14);
-            pushFollow(FOLLOW_relation_in_expression473);
-            relation56=relation();
+            pushFollow(FOLLOW_relation_in_expression458);
+            relation52=relation();
 
             state._fsp--;
             if (state.failed) return retval;
-            if ( state.backtracking==0 ) adaptor.addChild(root_0, relation56.getTree());
+            if ( state.backtracking==0 ) adaptor.addChild(root_0, relation52.getTree());
             dbg.location(54,23);
             // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:54:23: ( ( '&&' | '||' ) relation )*
-            try { dbg.enterSubRule(16);
+            try { dbg.enterSubRule(15);
 
-            loop16:
+            loop15:
             do {
-                int alt16=2;
-                try { dbg.enterDecision(16);
+                int alt15=2;
+                try { dbg.enterDecision(15);
 
-                int LA16_0 = input.LA(1);
+                int LA15_0 = input.LA(1);
 
-                if ( ((LA16_0>=33 && LA16_0<=34)) ) {
-                    alt16=1;
+                if ( ((LA15_0>=33 && LA15_0<=34)) ) {
+                    alt15=1;
                 }
 
 
-                } finally {dbg.exitDecision(16);}
+                } finally {dbg.exitDecision(15);}
 
-                switch (alt16) {
+                switch (alt15) {
             	case 1 :
             	    dbg.enterAlt(1);
 
             	    // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:54:24: ( '&&' | '||' ) relation
             	    {
             	    dbg.location(54,24);
-            	    set57=(Token)input.LT(1);
+            	    set53=(Token)input.LT(1);
             	    if ( (input.LA(1)>=33 && input.LA(1)<=34) ) {
             	        input.consume();
-            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set57));
+            	        if ( state.backtracking==0 ) adaptor.addChild(root_0, (Object)adaptor.create(set53));
             	        state.errorRecovery=false;state.failed=false;
             	    }
             	    else {
@@ -2194,21 +2178,21 @@ public class IdealParser extends DebugParser {
             	    }
 
             	    dbg.location(54,38);
-            	    pushFollow(FOLLOW_relation_in_expression484);
-            	    relation58=relation();
+            	    pushFollow(FOLLOW_relation_in_expression469);
+            	    relation54=relation();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
-            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, relation58.getTree());
+            	    if ( state.backtracking==0 ) adaptor.addChild(root_0, relation54.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop16;
+            	    break loop15;
                 }
             } while (true);
-            } finally {dbg.exitSubRule(16);}
+            } finally {dbg.exitSubRule(15);}
 
 
             }
@@ -2244,17 +2228,13 @@ public class IdealParser extends DebugParser {
 
     // $ANTLR start synpred1_Ideal
     public final void synpred1_Ideal_fragment() throws RecognitionException {   
-        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:10: ( INTEGER '.' INTEGER )
+        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:7: ( ID )
         dbg.enterAlt(1);
 
-        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:32:11: INTEGER '.' INTEGER
+        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:18:8: ID
         {
-        dbg.location(32,11);
-        match(input,INTEGER,FOLLOW_INTEGER_in_synpred1_Ideal253); if (state.failed) return ;
-        dbg.location(32,19);
-        match(input,15,FOLLOW_15_in_synpred1_Ideal255); if (state.failed) return ;
-        dbg.location(32,23);
-        match(input,INTEGER,FOLLOW_INTEGER_in_synpred1_Ideal257); if (state.failed) return ;
+        dbg.location(18,8);
+        match(input,ID,FOLLOW_ID_in_synpred1_Ideal114); if (state.failed) return ;
 
         }
     }
@@ -2262,13 +2242,17 @@ public class IdealParser extends DebugParser {
 
     // $ANTLR start synpred2_Ideal
     public final void synpred2_Ideal_fragment() throws RecognitionException {   
-        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:37:8: ( ID )
+        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:33:10: ( INTEGER '.' INTEGER )
         dbg.enterAlt(1);
 
-        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:37:9: ID
+        // C:\\Users\\Jarrod Roberson\\Projects\\ideal\\src\\main\\Ideal.g:33:11: INTEGER '.' INTEGER
         {
-        dbg.location(37,9);
-        match(input,ID,FOLLOW_ID_in_synpred2_Ideal287); if (state.failed) return ;
+        dbg.location(33,11);
+        match(input,INTEGER,FOLLOW_INTEGER_in_synpred2_Ideal258); if (state.failed) return ;
+        dbg.location(33,19);
+        match(input,15,FOLLOW_15_in_synpred2_Ideal260); if (state.failed) return ;
+        dbg.location(33,23);
+        match(input,INTEGER,FOLLOW_INTEGER_in_synpred2_Ideal262); if (state.failed) return ;
 
         }
     }
@@ -2310,172 +2294,65 @@ public class IdealParser extends DebugParser {
     }
 
 
-    protected DFA10 dfa10 = new DFA10(this);
-    static final String DFA10_eotS =
-        "\15\uffff";
-    static final String DFA10_eofS =
-        "\15\uffff";
-    static final String DFA10_minS =
-        "\1\4\1\17\13\uffff";
-    static final String DFA10_maxS =
-        "\1\20\1\42\13\uffff";
-    static final String DFA10_acceptS =
-        "\2\uffff\1\2\1\3\1\4\1\5\7\1";
-    static final String DFA10_specialS =
-        "\1\uffff\1\0\13\uffff}>";
-    static final String[] DFA10_transitionS = {
-            "\1\1\1\uffff\1\4\2\3\7\uffff\1\2",
-            "\1\13\1\5\1\14\1\uffff\1\12\1\uffff\2\7\4\6\6\10\2\11",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-    };
-
-    static final short[] DFA10_eot = DFA.unpackEncodedString(DFA10_eotS);
-    static final short[] DFA10_eof = DFA.unpackEncodedString(DFA10_eofS);
-    static final char[] DFA10_min = DFA.unpackEncodedStringToUnsignedChars(DFA10_minS);
-    static final char[] DFA10_max = DFA.unpackEncodedStringToUnsignedChars(DFA10_maxS);
-    static final short[] DFA10_accept = DFA.unpackEncodedString(DFA10_acceptS);
-    static final short[] DFA10_special = DFA.unpackEncodedString(DFA10_specialS);
-    static final short[][] DFA10_transition;
-
-    static {
-        int numStates = DFA10_transitionS.length;
-        DFA10_transition = new short[numStates][];
-        for (int i=0; i<numStates; i++) {
-            DFA10_transition[i] = DFA.unpackEncodedString(DFA10_transitionS[i]);
-        }
-    }
-
-    class DFA10 extends DFA {
-
-        public DFA10(BaseRecognizer recognizer) {
-            this.recognizer = recognizer;
-            this.decisionNumber = 10;
-            this.eot = DFA10_eot;
-            this.eof = DFA10_eof;
-            this.min = DFA10_min;
-            this.max = DFA10_max;
-            this.accept = DFA10_accept;
-            this.special = DFA10_special;
-            this.transition = DFA10_transition;
-        }
-        public String getDescription() {
-            return "37:1: term : ( ( ID )=> ID | '(' expression ')' | number | string | ID '(' args ')' );";
-        }
-        public void error(NoViableAltException nvae) {
-            dbg.recognitionException(nvae);
-        }
-        public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
-            TokenStream input = (TokenStream)_input;
-        	int _s = s;
-            switch ( s ) {
-                    case 0 : 
-                        int LA10_1 = input.LA(1);
-
-                         
-                        int index10_1 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (LA10_1==16) ) {s = 5;}
-
-                        else if ( ((LA10_1>=23 && LA10_1<=26)) && (synpred2_Ideal())) {s = 6;}
-
-                        else if ( ((LA10_1>=21 && LA10_1<=22)) && (synpred2_Ideal())) {s = 7;}
-
-                        else if ( ((LA10_1>=27 && LA10_1<=32)) && (synpred2_Ideal())) {s = 8;}
-
-                        else if ( ((LA10_1>=33 && LA10_1<=34)) && (synpred2_Ideal())) {s = 9;}
-
-                        else if ( (LA10_1==19) && (synpred2_Ideal())) {s = 10;}
-
-                        else if ( (LA10_1==15) && (synpred2_Ideal())) {s = 11;}
-
-                        else if ( (LA10_1==17) && (synpred2_Ideal())) {s = 12;}
-
-                         
-                        input.seek(index10_1);
-                        if ( s>=0 ) return s;
-                        break;
-            }
-            if (state.backtracking>0) {state.failed=true; return -1;}
-            NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 10, _s, input);
-            error(nvae);
-            throw nvae;
-        }
-    }
  
 
     public static final BitSet FOLLOW_statement_in_program57 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_15_in_program58 = new BitSet(new long[]{0x0000000000000032L});
+    public static final BitSet FOLLOW_15_in_program58 = new BitSet(new long[]{0x00000000007101F2L});
     public static final BitSet FOLLOW_ID_in_function69 = new BitSet(new long[]{0x0000000000010000L});
     public static final BitSet FOLLOW_16_in_function71 = new BitSet(new long[]{0x00000000007101D0L});
     public static final BitSet FOLLOW_args_in_function73 = new BitSet(new long[]{0x0000000000020000L});
     public static final BitSet FOLLOW_17_in_function75 = new BitSet(new long[]{0x0000000000040000L});
     public static final BitSet FOLLOW_18_in_function77 = new BitSet(new long[]{0x00000000007901F0L});
-    public static final BitSet FOLLOW_expression_in_function80 = new BitSet(new long[]{0x0000000000080002L});
+    public static final BitSet FOLLOW_statement_in_function79 = new BitSet(new long[]{0x0000000000080002L});
+    public static final BitSet FOLLOW_19_in_function82 = new BitSet(new long[]{0x00000000007901F0L});
     public static final BitSet FOLLOW_statement_in_function84 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_19_in_function88 = new BitSet(new long[]{0x00000000007901F0L});
-    public static final BitSet FOLLOW_expression_in_function91 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_statement_in_function95 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_arg_in_args108 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_19_in_args111 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_arg_in_args113 = new BitSet(new long[]{0x0000000000080002L});
-    public static final BitSet FOLLOW_ID_in_arg125 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_arg129 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_function_in_statement137 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arg_in_args96 = new BitSet(new long[]{0x0000000000080002L});
+    public static final BitSet FOLLOW_19_in_args99 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_arg_in_args101 = new BitSet(new long[]{0x0000000000080002L});
+    public static final BitSet FOLLOW_ID_in_arg118 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_arg122 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ATOM_in_statement130 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_statement137 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_assignment_in_statement151 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_assignment171 = new BitSet(new long[]{0x0000000000040000L});
-    public static final BitSet FOLLOW_18_in_assignment173 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_expression_in_assignment175 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ATOM_in_assignment190 = new BitSet(new long[]{0x0000000000040000L});
-    public static final BitSet FOLLOW_18_in_assignment192 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_expression_in_assignment194 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ATOM_in_assignment210 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_UNICODE_STRING_in_string231 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_HEX_NUMBER_in_number240 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INTEGER_in_number261 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_15_in_number263 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_INTEGER_in_number265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_INTEGER_in_number276 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_function_in_statement165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_assignment184 = new BitSet(new long[]{0x0000000000040000L});
+    public static final BitSet FOLLOW_18_in_assignment186 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_expression_in_assignment188 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ATOM_in_assignment203 = new BitSet(new long[]{0x0000000000040000L});
+    public static final BitSet FOLLOW_18_in_assignment205 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_string_in_assignment209 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_number_in_assignment213 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_UNICODE_STRING_in_string236 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_HEX_NUMBER_in_number245 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INTEGER_in_number266 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_15_in_number268 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_INTEGER_in_number270 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INTEGER_in_number281 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ID_in_term291 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_16_in_term300 = new BitSet(new long[]{0x00000000007101D0L});
     public static final BitSet FOLLOW_expression_in_term302 = new BitSet(new long[]{0x0000000000020000L});
     public static final BitSet FOLLOW_17_in_term304 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_number_in_term315 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_string_in_term324 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_term333 = new BitSet(new long[]{0x0000000000010000L});
-    public static final BitSet FOLLOW_16_in_term335 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_args_in_term337 = new BitSet(new long[]{0x0000000000020000L});
-    public static final BitSet FOLLOW_17_in_term339 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_20_in_negation353 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_term_in_negation356 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_unary365 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_negation_in_unary372 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_unary_in_mult380 = new BitSet(new long[]{0x0000000007800002L});
-    public static final BitSet FOLLOW_set_in_mult383 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_unary_in_mult400 = new BitSet(new long[]{0x0000000007800002L});
-    public static final BitSet FOLLOW_mult_in_add411 = new BitSet(new long[]{0x0000000000600002L});
-    public static final BitSet FOLLOW_set_in_add414 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_mult_in_add422 = new BitSet(new long[]{0x0000000000600002L});
-    public static final BitSet FOLLOW_add_in_relation433 = new BitSet(new long[]{0x00000001F8000002L});
-    public static final BitSet FOLLOW_set_in_relation436 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_add_in_relation460 = new BitSet(new long[]{0x00000001F8000002L});
-    public static final BitSet FOLLOW_relation_in_expression473 = new BitSet(new long[]{0x0000000600000002L});
-    public static final BitSet FOLLOW_set_in_expression476 = new BitSet(new long[]{0x00000000007101D0L});
-    public static final BitSet FOLLOW_relation_in_expression484 = new BitSet(new long[]{0x0000000600000002L});
-    public static final BitSet FOLLOW_INTEGER_in_synpred1_Ideal253 = new BitSet(new long[]{0x0000000000008000L});
-    public static final BitSet FOLLOW_15_in_synpred1_Ideal255 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_INTEGER_in_synpred1_Ideal257 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_synpred2_Ideal287 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_20_in_negation338 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_term_in_negation341 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_unary350 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_negation_in_unary357 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_unary_in_mult365 = new BitSet(new long[]{0x0000000007800002L});
+    public static final BitSet FOLLOW_set_in_mult368 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_unary_in_mult385 = new BitSet(new long[]{0x0000000007800002L});
+    public static final BitSet FOLLOW_mult_in_add396 = new BitSet(new long[]{0x0000000000600002L});
+    public static final BitSet FOLLOW_set_in_add399 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_mult_in_add407 = new BitSet(new long[]{0x0000000000600002L});
+    public static final BitSet FOLLOW_add_in_relation418 = new BitSet(new long[]{0x00000001F8000002L});
+    public static final BitSet FOLLOW_set_in_relation421 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_add_in_relation445 = new BitSet(new long[]{0x00000001F8000002L});
+    public static final BitSet FOLLOW_relation_in_expression458 = new BitSet(new long[]{0x0000000600000002L});
+    public static final BitSet FOLLOW_set_in_expression461 = new BitSet(new long[]{0x00000000007101D0L});
+    public static final BitSet FOLLOW_relation_in_expression469 = new BitSet(new long[]{0x0000000600000002L});
+    public static final BitSet FOLLOW_ID_in_synpred1_Ideal114 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_INTEGER_in_synpred2_Ideal258 = new BitSet(new long[]{0x0000000000008000L});
+    public static final BitSet FOLLOW_15_in_synpred2_Ideal260 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_INTEGER_in_synpred2_Ideal262 = new BitSet(new long[]{0x0000000000000002L});
 
 }
