@@ -26,8 +26,10 @@ function_signature : ID '(' ID (',' ID)* ')' ;
 function_invocation : ID '(' expression (',' expression)* ')' ;
 
 string : UNICODE_STRING;
+
+
 number : HEX_NUMBER
-       | (INTEGER '.' INTEGER)=> INTEGER '.' INTEGER
+       | FLOAT
        | INTEGER
        ;
 
@@ -57,7 +59,10 @@ expression : relation (('&&' | '||') relation)*;
 
 HEX_NUMBER : '0x' HEX_DIGIT+;
 
-INTEGER : DIGIT+ ;
+fragment 
+FLOAT: ;
+
+INTEGER : DIGIT+ ({input.LA(1)=='.' && input.LA(2)>='0' && input.LA(2)<='9'}?=> '.' DIGIT+ {$type=FLOAT;})? ;
 
 UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"' ;
 
