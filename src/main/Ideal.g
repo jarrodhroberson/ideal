@@ -1,74 +1,70 @@
 grammar Ideal;
 
-options { 
-    output = AST; 
-    language = Java; 
+options {
+   output = AST;
+   language = Java;
+   ASTLabelType = CommonTree;
 }
-	
-@header { package ideal; }
 
-@lexer::header { package ideal; }
+
+test : program EOF! ;
 
 program : (statement'.')* ;
 
-function : ID '(' args ')' '->' statement (',' statement)* ;	
-
-args : arg (',' arg)*;		
-
-arg : (ID)=> ID | expression;
-
-statement : ATOM
-	  | expression
+statement : expression
           | assignment
-          | function
           ;
 
 assignment : ID '->' expression
            | ATOM '->' ( string | number )
-           ;	
+           | function_signature '->' ( assignment ',' )* expression ;
+
+function_signature : ID '(' ID (',' ID)* ')' ;
+function_invocation : ID '(' expression (',' expression)* ')' ;
 
 string : UNICODE_STRING;
-	
-number : HEX_NUMBER 
+number : HEX_NUMBER
        | (INTEGER '.' INTEGER)=> INTEGER '.' INTEGER
        | INTEGER;
 
 // expressions
 
-term : ID 
-     |'(' expression ')'  
+term : '(' expression ')'
      | number
      | string
+     | function_invocation
+     | ID
+     | ATOM
      ;
 
-negation : '!'* term;	
+negation : '!'* term;
 
 unary : ('+'|'-')* negation;
 
-mult : unary (('*' | '/' | ('%'|'mod') ) unary)*;	
+mult : unary (('*' | '/' | ('%'|'mod') ) unary)*;
 
-add : mult (('+' | '-') mult)*; 
+add : mult (('+' | '-') mult)*;
 
 relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)*;
-			
+
 expression : relation (('&&' | '||') relation)*;
 
-// ================================================================
+// LEXER ================================================================
 
 HEX_NUMBER : '0x' HEX_DIGIT+;
 
-INTEGER : DIGIT+;
+INTEGER : DIGIT+ ;
 
-UNICODE_STRING 	: '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"'
+UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"'
                 ;
 
 WS : (' '|'\n'|'\r'|'\t')+ {$channel = HIDDEN;} ; // ignore whitespace
 
-fragment 
+fragment
 ESC : '\\' ( UNI_ESC |'b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\' );
 
-fragment 
-UNI_ESC	: 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT;
+fragment
+UNI_ESC : 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT;
 
 fragment
 HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
@@ -76,12 +72,8 @@ HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 fragment
 DIGIT : ('0'..'9');
 
-ATOM : ('A'..'Z'|'_')+;
+ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')*;
 
 ID : ('a'..'z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 
 COMMENT : '/*' .* '*/' {$channel = HIDDEN;};
-
-
-
-
