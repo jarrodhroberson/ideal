@@ -7,25 +7,29 @@ options {
 }
 
 
-test : program EOF! ;
+eval : program EOF! ;
 
 program : (statement'.')* ;
 
-statement : expression
+statement : function_invocation
           | assignment
+          | ATOM
           ;
 
 assignment : ID '->' expression
            | ATOM '->' ( string | number )
-           | function_signature '->' ( assignment ',' )* expression ;
+           | function_signature '->' ( assignment ',' )* expression 
+           ;
 
 function_signature : ID '(' ID (',' ID)* ')' ;
+
 function_invocation : ID '(' expression (',' expression)* ')' ;
 
 string : UNICODE_STRING;
 number : HEX_NUMBER
        | (INTEGER '.' INTEGER)=> INTEGER '.' INTEGER
-       | INTEGER;
+       | INTEGER
+       ;
 
 // expressions
 
@@ -55,8 +59,7 @@ HEX_NUMBER : '0x' HEX_DIGIT+;
 
 INTEGER : DIGIT+ ;
 
-UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"'
-                ;
+UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"' ;
 
 WS : (' '|'\n'|'\r'|'\t')+ {$channel = HIDDEN;} ; // ignore whitespace
 
