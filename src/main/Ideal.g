@@ -28,7 +28,7 @@ type_definition : TYPE_ID '->' assignment (',' assignment)*
 
 function_signature : ID '(' ID (',' ID)* ')' ;
 
-function_invocation : (TYPE_ID '.')? ID '(' expression (',' expression)* ')' ;
+function_invocation : ( NAMESPACE ':' | TYPE_ID ':' | ID ':' | ':' ) ID '(' expression (',' expression)* ')' ;
 
 string : UNICODE_STRING;
 
@@ -87,6 +87,9 @@ DIGIT : ('0'..'9') ;
 ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ; 
 
 TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
+
+fragment
+NAMESPACE : (TYPE_ID ( ':' TYPE_ID )*)? ;
 
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
