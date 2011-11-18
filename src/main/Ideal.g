@@ -1,6 +1,7 @@
 grammar Ideal;
 
-options {
+options 
+{
    output = AST;
    language = Java;
    ASTLabelType = CommonTree;
@@ -13,20 +14,23 @@ program : (statement'.')* ;
 
 statement : function_invocation
           | assignment
+          | type_definition
           | ATOM
-          ;
-
+          ;	
+               
 assignment : ID '->' expression
            | ATOM '->' ( string | number )
            | function_signature '->' ( assignment ',' )* expression 
            ;
 
+type_definition : TYPE_ID '->' assignment (',' assignment)*
+		;	 
+
 function_signature : ID '(' ID (',' ID)* ')' ;
 
-function_invocation : ID '(' expression (',' expression)* ')' ;
+function_invocation : (TYPE_ID '.')? ID '(' expression (',' expression)* ')' ;
 
 string : UNICODE_STRING;
-
 
 number : HEX_NUMBER
        | FLOAT
@@ -78,10 +82,12 @@ fragment
 HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 
 fragment
-DIGIT : ('0'..'9');
+DIGIT : ('0'..'9') ;
 
-ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')*;
+ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ; 
 
-ID : ('a'..'z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
+TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
-COMMENT : '/*' .* '*/' {$channel = HIDDEN;};
+ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
+
+COMMENT : '/*' .* '*/' {$channel = HIDDEN;} ;
