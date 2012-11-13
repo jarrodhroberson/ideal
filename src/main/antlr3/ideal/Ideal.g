@@ -26,7 +26,7 @@ statement : function_invocation
           ;	
                
 assignment : ID '->' expression
-           | ATOM '->' ( string | number )
+           | ATOM '->' expression
            | function_signature '->' ( assignment ',' )* expression
            ;
 
@@ -45,25 +45,26 @@ number : HEX_NUMBER
 
 // expressions
 
-term : '('! expression ')'!
+term : '(' expression ')'
      | number
      | string
      | function_invocation
      | ID
      | ATOM
      ;
+power : term ('^' term)* ;
 
-negation : '!'* term;
+negation : '!' negation | power ;
 
-unary : ('+'!|'-'^)* negation;
+unary    : ('+'! | '-'^)* negation ;
 
-mult : unary (('*' | '/' | ('%'|'mod') ) unary)*;
+mult : unary (('*' | '/' | ('%'|'mod') ) unary)* ;
 
-add : mult (('+' | '-') mult)*;
+add : mult (('+' | '-') mult)* ;
 
-relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)*;
+relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)* ;
 
-expression : relation (('&&' | '||') relation)*;
+expression : relation (('&&' | '||') relation)* ;
 
 // LEXER ================================================================
 
@@ -90,6 +91,7 @@ HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 fragment
 DIGIT : ('0'..'9') ;
 
+//ATOM is all UPPER_CASE
 ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ; 
 
 TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;

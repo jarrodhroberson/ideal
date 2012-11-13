@@ -1,3 +1,4 @@
 function(x) ->
   sqr(a) -> a * a,
-  y -> sqr(x).
+  y -> sqr(x),
+  y.
