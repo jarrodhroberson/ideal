@@ -7,6 +7,13 @@ options
    ASTLabelType = CommonTree;
 }
 
+@lexer::header {
+  package ideal;
+}
+ 
+@parser::header {
+  package ideal;
+}
 
 eval : program EOF! ;
 
@@ -20,16 +27,15 @@ statement : function_invocation
                
 assignment : ID '->' expression
            | ATOM '->' ( string | number )
-           | function_signature '->' ( assignment ',' )* expression 
+           | function_signature '->' ( assignment ',' )* expression
            ;
 
-type_definition : TYPE_ID '->' assignment (',' assignment)*
-		;	 
+type_definition : TYPE_ID '->' assignment (',' assignment)* ;
 
-function_signature : ID '(' ID (',' ID)* ')' ;
+function_signature : ID '('! ID (',' ID)* ')'! ;
 
-function_invocation : ( NAMESPACE ':' | TYPE_ID ':' | ID ':' | ':' )? ID '(' expression (',' expression)* ')' ;
-
+function_invocation : ( NAMESPACE ':' | TYPE_ID ':' | ID ':' | ':' )? ID '('! term (',' term)* ')'! ;
+									      //((',' statement)=> ',' statement)*
 string : UNICODE_STRING;
 
 number : HEX_NUMBER
@@ -39,7 +45,7 @@ number : HEX_NUMBER
 
 // expressions
 
-term : '(' expression ')'
+term : '('! expression ')'!
      | number
      | string
      | function_invocation
@@ -49,7 +55,7 @@ term : '(' expression ')'
 
 negation : '!'* term;
 
-unary : ('+'|'-')* negation;
+unary : ('+'!|'-'^)* negation;
 
 mult : unary (('*' | '/' | ('%'|'mod') ) unary)*;
 

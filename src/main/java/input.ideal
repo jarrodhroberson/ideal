@@ -1,0 +1,3 @@
+function(x) ->
+  sqr(a) -> a * a,
+  y -> sqr(x).

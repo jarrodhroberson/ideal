@@ -11,12 +11,12 @@ public class IdealMain
 {
     public static void main(final String[] args) throws IOException, RecognitionException
     {
-        final InputStream is = IdealMain.class.getResourceAsStream(args[0]);
+        final InputStream is = IdealMain.class.getResourceAsStream("/input.ideal");
         final ANTLRInputStream ais = new ANTLRInputStream(is);
         final IdealLexer lexer = new IdealLexer(ais);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final IdealParser parser = new IdealParser(tokens);
-        parser.program();
-
+        final IdealParser.program_return result = parser.program();
+        System.out.println(result.tree.toStringTree());
     }
 }
