@@ -24,18 +24,22 @@ statement : function_invocation
           | type_definition
           | ATOM
           ;	
-               
-assignment : ID '->' expression
-           | ATOM '->' expression
+                 
+assignment : ID '->' ( expression | container | container_access )
+           | ATOM '->' ( expression | container | container_access )
            | function_signature '->' ( assignment ',' )* expression
            ;
 
-type_definition : TYPE_ID '->' assignment (',' assignment)* ;
+type_definition : TYPE_ID ':' assignment (',' assignment)*  ;
 
-function_signature : ID '('! ID (',' ID)* ')'! ;
+container : '[' (( ATOM | string | number ) ':')? ( expression ) (',' ((ATOM | string | number ) ':')? ( expression ) )* ']' ;	
+
+container_access : ID '[' ( ID | ATOM | string | number ) ']' ;	
+
+function_signature : TYPE_ID? ID '('! TYPE_ID? ID (',' TYPE_ID? ID)* ')'! ;
 
 function_invocation : ( NAMESPACE ':' | TYPE_ID ':' | ID ':' | ':' )? ID '('! term (',' term)* ')'! ;
-									      //((',' statement)=> ',' statement)*
+
 string : UNICODE_STRING;
 
 number : HEX_NUMBER
@@ -47,24 +51,24 @@ number : HEX_NUMBER
 
 term : '(' expression ')'
      | number
-     | string
      | function_invocation
      | ID
      | ATOM
      ;
+              
 power : term ('^' term)* ;
 
 negation : '!' negation | power ;
 
-unary    : ('+'! | '-'^)* negation ;
+unary : ('+'! | '-'^)* negation ;
 
-mult : unary (('*' | '/' | ('%'|'mod') ) unary)* ;
+mult : unary (('*' | '/' | '%' ) unary)* ;
 
 add : mult (('+' | '-') mult)* ;
 
 relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)* ;
 
-expression : relation (('&&' | '||') relation)* ;
+expression : relation (('&' | '|') relation)* | string;
 
 // LEXER ================================================================
 
@@ -75,7 +79,7 @@ FLOAT: ;
 
 INTEGER : DIGIT+ ({input.LA(1)=='.' && input.LA(2)>='0' && input.LA(2)<='9'}?=> '.' DIGIT+ {$type=FLOAT;})? ;
 
-UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"' ;
+UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"';
 
 WS : (' '|'\n'|'\r'|'\t')+ {$channel = HIDDEN;} ; // ignore whitespace
 

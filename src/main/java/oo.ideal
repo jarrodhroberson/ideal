@@ -1,0 +1,34 @@
+Date : year, month, day.
+
+TypeSafeDate : Number year ( year > 0 ), 
+               Number month ( month > 0 & month < 12 ),
+               Number day ( day > 0 & ( month = 2 &  (!isLeapYear() & day <= 28 | isLeapYear() & day <=29 ) | day <= 31 )),
+	       TRUE | FALSE isLeapYear() -> year % 400 | ( year % 100 != 0 & year % 4 = 0 ),
+	       String asString() -> year "-" month "-" day.
+
+Time : hour, minute, second, millis.
+
+Hour : Number : ( n >= 0 & n < 24 ), String asString() -> format("%02").
+Minute : Number : ( n >= 0 & n < 60 ), String asString() -> format("%02").
+Second : Number : ( n >= 0 & n < 60 ), String asString() -> format("%02").
+Millis : Number :  ( n >= 0 & n < 1000 ), String asString() -> format("%04").
+
+TypeSafeTime : 
+	Hour hour ,
+        Minute minute ,
+        Second second,
+        Millis millis,
+	operator+(TypeSafeTime time) -> ,
+        operator+(Millis millis) -> ,
+        operator+(Second secs) -> , 
+        String asString() -> hour ":" minute ":" second "." millis.
+
+DateTime : Date : Time.
+
+TypeSafeDateTime : TypeSafeDate : TypeSafeTime :
+	TypeSafeDate date,
+     	TypeSafeTime time,
+	String asString() -> TypeSafeDate.asString() "T" TypeSafeTime.asString().
+
+sum3(a,b,c) -> a + b + c.
+Number sum3typesafe(Number a, Number b, Number c) -> a + b + c.

@@ -1,4 +1,6 @@
-function(x) ->
-  sqr(a) -> a * a,
-  y -> sqr(x),
-  y.
+monday -> 1.
+tuesday -> 2.
+
+dow -> [ "S", "M", "T", "W", "T", "F", "S" ].
+moy -> [ "Jan":"January", "Feb":"Febuary", "Mar":"March" ].
+numArray -> [ 1,2,3,4,5,6,7,8,9,0 ].
