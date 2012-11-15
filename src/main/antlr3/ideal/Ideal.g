@@ -7,6 +7,8 @@ options
    ASTLabelType = CommonTree;
 }
 
+tokens { ANONYMOUS; MAP; LIST; ASSIGNMENT; FUNCTION; TYPE; NAME; }
+
 @lexer::header {
   package ideal;
 }
@@ -25,20 +27,59 @@ statement : function_invocation
           | ATOM
           ;	
                  
-assignment : ID '->' ( expression | container | container_access )
-           | ATOM '->' ( expression | container | container_access )
-           | function_signature '->' ( assignment ',' )* expression
+assignment : associative_array_assignment -> ^( ASSIGNMENT associative_array_assignment )
+	         | container_assignment -> ^( ASSIGNMENT container_assignment )
+           | id_assignment -> ^( ASSIGNMENT id_assignment )
+           | atom_assignment -> ^( ASSIGNMENT atom_assignment )
+           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION TYPE_ID function_signature '->' ( assignment ',' )* expression )
            ;
 
-type_definition : TYPE_ID ':' assignment (',' assignment)*  ;
+id_assignment :	TYPE_ID ID '->' expression -> ^(TYPE TYPE_ID) ID '->' expression
+	            | ID '->' expression -> ^(TYPE ANONYMOUS ID) '->' expression
+	            ;
+         
+atom_assignment : TYPE_ID ATOM '->' expression -> ^(TYPE TYPE_ID) ATOM expression
+	              | ATOM '->' expression -> ^(TYPE ANONYMOUS) ATOM expression
+	              ;
+         
+container_assignment : TYPE_ID ID '->' container -> ^(TYPE TYPE_ID) ^(NAME ID) container
+		                 | ID '->' container -> ^(TYPE ANONYMOUS) ^(NAME ID) container
+		                 ;	
+          
+associative_array_assignment : key ':' value ID '->' associative_array -> ^(TYPE key) ^(TYPE value) ^(NAME ID) associative_array
+			                       | ID '->' associative_array -> ^(TYPE ANONYMOUS) ^(TYPE ANONYMOUS) ^(NAME ID) associative_array
+			                       ;
+			     	
+key : ( TYPE_ID | ATOM | string | number ) ;
+value : ( TYPE_ID | ATOM | string | number ) ;	 
 
-container : '[' (( ATOM | string | number ) ':')? ( expression ) (',' ((ATOM | string | number ) ':')? ( expression ) )* ']' ;	
+type_definition : TYPES ':' TYPE_ID assignment (',' assignment)*  ;	
+
+container : '{' container_contents ( ',' container_contents )* '}' ->  ^( LIST container_contents ( container_contents )* )
+          ;
+
+container_contents : expression | container | associative_array ;
+
+associative_array : '{' associative_array_key ':' associative_array_value (',' associative_array_key ':' associative_array_value )* '}' ->
+									  ^( MAP associative_array_key associative_array_value ( associative_array_key associative_array_value )* )
+									;
+
+associative_array_value :	expression | container | associative_array ;
+associative_array_key :	TYPE_ID | ATOM | string | number ;
 
 container_access : ID '[' ( ID | ATOM | string | number ) ']' ;	
 
-function_signature : TYPE_ID? ID '('! TYPE_ID? ID (',' TYPE_ID? ID)* ')'! ;
+function_signature : TYPES ID '(' function_parameters ')' -> ^( TYPES ID '(' function_parameters ')' )
+		               | ID '(' function_parameters ')' -> ^( ANONYMOUS ID '(' function_parameters ')' )
+		               ;
 
-function_invocation : ( NAMESPACE ':' | TYPE_ID ':' | ID ':' | ':' )? ID '('! term (',' term)* ')'! ;
+function_parameters : function_parameter (',' function_parameter)* ;
+
+function_parameter : TYPE_ID ID -> ^( TYPE_ID ID )
+		               | ID -> ^( ANONYMOUS ID)
+		               ;	
+
+function_invocation : ( TYPE_ID '.' |  ID '.' | '.' ) ID '('! term (',' term)* ')'! ;
 
 string : UNICODE_STRING;
 
@@ -68,7 +109,7 @@ add : mult (('+' | '-') mult)* ;
 
 relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)* ;
 
-expression : relation (('&' | '|') relation)* | string;
+expression : relation (('&' | '|') relation)* | string  | container_access ;
 
 // LEXER ================================================================
 
@@ -96,12 +137,12 @@ fragment
 DIGIT : ('0'..'9') ;
 
 //ATOM is all UPPER_CASE
-ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ; 
+ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')+ ; 
 
-TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
+TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')+ ;
 
 fragment
-NAMESPACE : (TYPE_ID ( ':' TYPE_ID )*)? ;
+TYPES : TYPE_ID ( ':' TYPE_ID )* ;
 
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
