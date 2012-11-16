@@ -119,8 +119,6 @@ number : HEX_NUMBER
 
 // expressions
 
-term : '(' expression ')'
-     | number -> ^(NUMBER number)
 term : '('! expression ')'!
      | number
      | (function_invocation)=> function_invocation 
