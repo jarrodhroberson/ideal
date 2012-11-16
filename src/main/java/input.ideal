@@ -1,8 +1,10 @@
+moy -> [ "Jan":"January", "Feb":"Febuary", "Mar":"March" ].
+String:String moy -> [ "Jan":"January", "Feb":"Febuary", "Mar":"March" ].
 PI -> 3.14.
 
 Number area(Number radius) -> PI * radius^2.
 
-b(x) -> 2*(3+4).
+Number b(Number x, String y, Date d, zed) -> 2*(3+4).
 
 c(x) -> x < PI.
 
@@ -12,7 +14,9 @@ sqr(n) -> n * n.
 
 x -> sqr(3).
 
-print(x).
+print(x) -> "Hello" < "World".
+
+
 
 
 
@@ -25,7 +29,7 @@ Sting friday -> "Friday".
 
 String dow -> [ "S", "M", "T", "W", "T", "F", "S" ].
 
-String:String moy -> [ "Jan":"January", "Feb":"Febuary", "Mar":"March" ].
+
 
 Number numArray -> [ 1,2,3,4,5,6,7,8,9,0 ].
 
