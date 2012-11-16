@@ -49,16 +49,18 @@ eval : program EOF! ;
 
 program : (statement'.'!)* ;
 
-statement : (function_invocation)=> function_invocation
-	  | (type_definition)=> type_definition
+statement : (type_definition)=> type_definition
+          | (function_invocation)=> function_invocation
           | assignment
           | (ATOM)=> ATOM
           ;	
                  
 assignment : id_assignment -> ^( ASSIGNMENT id_assignment )
            | atom_assignment -> ^( ASSIGNMENT atom_assignment )
-           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION function_signature ( assignment )* expression )
+           | function_assignment -> ^( ASSIGNMENT function_assignment )
            ;
+           
+function_assignment : function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION function_signature ( assignment )* expression ) ;
 
 id_assignment :	(associative_array_assignment)=> associative_array_assignment
               | TYPE_ID ID '->' expression -> ^(TYPE TYPE_ID) ^(NAME ID) ^(VALUE expression)
@@ -73,15 +75,15 @@ associative_array_assignment : key ':' value ID '->' associative_array -> ^(TYPE
 		             | ID '->' associative_array -> ^(TYPE ANONYMOUS) ^(TYPE ANONYMOUS) ^(NAME ID) associative_array
 		             ;
 			     	
-key : ( TYPE_ID | ATOM | string | number ) ;
-value : ( TYPE_ID | ATOM | string | number ) ;	 
+key : TYPE_ID ;
+value : TYPE_ID ;	 
 
-type_definition : super_types? TYPE_ID '=>' type_members (',' type_members)* -> ^(TYPE_DEF super_types? ^(NAME TYPE_ID) type_members (type_members)*) ;
+type_definition : super_types? TYPE_ID '=>' expression? (type_members (',' type_members)*)? -> ^(TYPE_DEF super_types? ^(NAME TYPE_ID) ^(FUNCTION expression)? (type_members (type_members)*)? ) ;
 
 super_types : TYPE_ID (':' TYPE_ID)* -> ^(SUPER TYPE_ID (TYPE_ID)*) ;
 
-type_members : TYPE_ID ID ('(' boolean_expression ')')? -> ^(TYPE_ID ^(FUNCTION boolean_expression)? ID)
-             | ID ('(' boolean_expression ')')? -> ^(ANONYMOUS ^(FUNCTION boolean_expression)? ID)
+type_members : TYPE_ID ID (expression (',' expression)*)? -> ^(TYPE_ID ID ^(FUNCTION (expression (expression)*)? ))
+             | ID (expression (',' expression)*)? -> ^(ANONYMOUS ID ^(FUNCTION (expression (expression)*)? ))
              | assignment
              ;	
 
@@ -115,8 +117,7 @@ function_invocation : ( context )? ID '(' term (',' term)* ')' -> ^(INVOCATION (
 
 context : TYPE_ID '.' -> ^(CONTEXT TYPE_ID)
         | ID '.' -> ^(CONTEXT ID)
-        | '.' -> ^(CONTEXT '.')
-	      ;	 
+	;	 
 
 string : UNICODE_STRING ;
 
@@ -129,6 +130,8 @@ number : HEX_NUMBER
 
 term : '('! expression ')'!
      | number
+     | string
+     | (container_access)=> container_access
      | (function_invocation)=> function_invocation 
      | ATOM
      | ID
@@ -150,19 +153,10 @@ and_or : '&' -> AND
        | '|' -> OR
        ;
 
-expression : relation (and_or relation)*
-           | container_access
-           | TRUE
-           | FALSE
-           ;
-           
-boolean_expression : relation (and_or relation)*
-                   | TRUE
-                   | FALSE
-                   ; 
+expression : relation (and_or^ relation)* ;
 
 // LEXER ================================================================
-
+        
 HEX_NUMBER : '0x' HEX_DIGIT+;
 
 fragment 
