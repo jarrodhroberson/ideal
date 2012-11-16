@@ -7,7 +7,22 @@ options
    ASTLabelType = CommonTree;
 }
 
-tokens { ANONYMOUS; MAP; LIST; ASSIGNMENT; FUNCTION; TYPE; NAME; }
+tokens { ANONYMOUS;
+         CONTEXT; 
+         MAP; 
+         LIST; 
+         ASSIGNMENT; 
+         FUNCTION;
+         EXPRESSION; 
+         TYPE; 
+         NAME;
+         NUMBER;
+         STRING; 
+         PARAMETERS;
+         INDEX;
+         VALUE;
+         INVOCATION;
+       }
 
 @lexer::header {
   package ideal;
@@ -19,7 +34,7 @@ tokens { ANONYMOUS; MAP; LIST; ASSIGNMENT; FUNCTION; TYPE; NAME; }
 
 eval : program EOF! ;
 
-program : (statement'.')* ;
+program : (statement'.'!)* ;
 
 statement : function_invocation
           | assignment
@@ -31,15 +46,15 @@ assignment : associative_array_assignment -> ^( ASSIGNMENT associative_array_ass
 	         | container_assignment -> ^( ASSIGNMENT container_assignment )
            | id_assignment -> ^( ASSIGNMENT id_assignment )
            | atom_assignment -> ^( ASSIGNMENT atom_assignment )
-           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION TYPE_ID function_signature '->' ( assignment ',' )* expression )
+           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(NAME function_signature) ( assignment )* expression )
            ;
 
-id_assignment :	TYPE_ID ID '->' expression -> ^(TYPE TYPE_ID) ID '->' expression
-	            | ID '->' expression -> ^(TYPE ANONYMOUS ID) '->' expression
+id_assignment :	TYPE_ID ID '->' expression -> ^(TYPE TYPE_ID) ^(NAME ID) ^(VALUE expression)
+	            | ID '->' expression -> ^(TYPE ANONYMOUS) ^(NAME ID) ^(VALUE expression)
 	            ;
          
-atom_assignment : TYPE_ID ATOM '->' expression -> ^(TYPE TYPE_ID) ATOM expression
-	              | ATOM '->' expression -> ^(TYPE ANONYMOUS) ATOM expression
+atom_assignment : TYPE_ID ATOM '->' expression -> ^(TYPE TYPE_ID) ^(NAME ATOM) ^(VALUE expression)
+	              | ATOM '->' expression -> ^(TYPE ANONYMOUS) ^(NAME ATOM) ^(VALUE expression)
 	              ;
          
 container_assignment : TYPE_ID ID '->' container -> ^(TYPE TYPE_ID) ^(NAME ID) container
@@ -55,22 +70,24 @@ value : ( TYPE_ID | ATOM | string | number ) ;
 
 type_definition : TYPES ':' TYPE_ID assignment (',' assignment)*  ;	
 
-container : '{' container_contents ( ',' container_contents )* '}' ->  ^( LIST container_contents ( container_contents )* )
+container : '[' container_contents ( ',' container_contents )* ']' ->  ^( LIST container_contents ( container_contents )* )
           ;
 
 container_contents : expression | container | associative_array ;
 
-associative_array : '{' associative_array_key ':' associative_array_value (',' associative_array_key ':' associative_array_value )* '}' ->
+associative_array : '[' associative_array_key ':' associative_array_value (',' associative_array_key ':' associative_array_value )* ']' ->
 									  ^( MAP associative_array_key associative_array_value ( associative_array_key associative_array_value )* )
 									;
 
 associative_array_value :	expression | container | associative_array ;
 associative_array_key :	TYPE_ID | ATOM | string | number ;
 
-container_access : ID '[' ( ID | ATOM | string | number ) ']' ;	
+container_access : ID '[' index ']' -> ^(NAME ID) ^(INDEX index ) ;	
 
-function_signature : TYPES ID '(' function_parameters ')' -> ^( TYPES ID '(' function_parameters ')' )
-		               | ID '(' function_parameters ')' -> ^( ANONYMOUS ID '(' function_parameters ')' )
+index :	ID | ATOM | string | number ;
+
+function_signature : TYPES ID '(' function_parameters ')' -> ^(TYPE TYPES) ^(NAME ID) ^(PARAMETERS function_parameters) 
+		               | ID '(' function_parameters ')' -> ^(TYPE ANONYMOUS) ^(NAME ID) ^(PARAMETERS function_parameters)
 		               ;
 
 function_parameters : function_parameter (',' function_parameter)* ;
@@ -79,9 +96,14 @@ function_parameter : TYPE_ID ID -> ^( TYPE_ID ID )
 		               | ID -> ^( ANONYMOUS ID)
 		               ;	
 
-function_invocation : ( TYPE_ID '.' |  ID '.' | '.' ) ID '('! term (',' term)* ')'! ;
+function_invocation : ( context )? ID '(' term (',' term)* ')' -> ^(INVOCATION ( context )? ^(NAME ID) ^(PARAMETERS term (term)*) ) ;
 
-string : UNICODE_STRING;
+context : TYPE_ID '.' -> ^(CONTEXT TYPE_ID)
+        | ID '.' -> ^(CONTEXT ID)
+        | '.' -> ^(CONTEXT '.')
+	      ;	 
+
+string : UNICODE_STRING -> ^(STRING UNICODE_STRING);
 
 number : HEX_NUMBER
        | FLOAT
@@ -91,10 +113,10 @@ number : HEX_NUMBER
 // expressions
 
 term : '(' expression ')'
-     | number
-     | function_invocation
-     | ID
+     | number -> ^(NUMBER number)
+     | (function_invocation)=> function_invocation 
      | ATOM
+     | ID
      ;
               
 power : term ('^' term)* ;
@@ -109,7 +131,11 @@ add : mult (('+' | '-') mult)* ;
 
 relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)* ;
 
-expression : relation (('&' | '|') relation)* | string  | container_access ;
+expression : relation (and_or relation)*
+           | string  
+           | container_access
+           ;
+and_or : '&' | '|' ;
 
 // LEXER ================================================================
 

@@ -1,3 +1,12 @@
+sqr(n) -> n * n.
+
+x -> sqr(3).
+
+print(x).
+
+
+
+
 Number sunday -> 0.
 
 monday -> 1.
@@ -10,4 +19,6 @@ String:String moy -> [ "Jan":"January", "Feb":"Febuary", "Mar":"March" ].
 
 Number numArray -> [ 1,2,3,4,5,6,7,8,9,0 ].
 
-String ds -> [ [1,2,3, [4,5, [6,7]], ["a":1, "b":2], 4, 5, "six" ]].
+ds ->  [1,2,3,[4,5,[6,7]],["a":1, "b":2],4,5,"six"].
+
+
