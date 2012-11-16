@@ -1,6 +1,7 @@
-Number Year => year.
+Number Year => Number year ( year > 0 & year < 9999 ).
 
-Number : String Date => Number year,
+Number : String
+Date => Year year,
         month,
         day,
         String toString() -> format(x),

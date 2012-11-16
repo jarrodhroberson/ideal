@@ -78,8 +78,8 @@ type_definition : super_types? TYPE_ID '=>' type_members (',' type_members)* -> 
 
 super_types : TYPE_ID (':' TYPE_ID)* -> ^(SUPER TYPE_ID (TYPE_ID)*) ;
 
-type_members : TYPE_ID ID -> ^(TYPE_ID ID)
-             | ID -> ^(ANONYMOUS ID)
+type_members : TYPE_ID ID ('(' boolean_expression ')')? -> ^(TYPE_ID ^(FUNCTION boolean_expression)? ID)
+             | ID ('(' boolean_expression ')')? -> ^(ANONYMOUS ^(FUNCTION boolean_expression)? ID)
              | assignment
              ;	
 
@@ -155,6 +155,11 @@ expression : relation (and_or relation)*
            | TRUE
            | FALSE
            ;
+           
+boolean_expression : relation (and_or relation)*
+                   | TRUE
+                   | FALSE
+                   ; 
 
 // LEXER ================================================================
 
