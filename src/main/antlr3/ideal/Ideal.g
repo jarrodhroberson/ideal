@@ -29,6 +29,8 @@ tokens { ANONYMOUS;
          SUBTRACT;
          ADD;
          PAIR;
+         TRUE;
+         FALSE;
        }
 
 @lexer::header {
@@ -43,16 +45,15 @@ eval : program EOF! ;
 
 program : (statement'.'!)* ;
 
-statement : function_invocation
+statement : (function_invocation)=> function_invocation
+	  | (type_definition)=> type_definition
           | assignment
-          | type_definition
-          | ATOM
+          | (ATOM)=> ATOM
           ;	
                  
 assignment : id_assignment -> ^( ASSIGNMENT id_assignment )
            | atom_assignment -> ^( ASSIGNMENT atom_assignment )
-           | TYPE_ID function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(TYPE TYPE_ID) ^(NAME function_signature) ( assignment )* expression )
-           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(TYPE ANONYMOUS) ^(NAME function_signature) ( assignment )* expression )
+           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION function_signature ( assignment )* expression )
            ;
 
 id_assignment :	(associative_array_assignment)=> associative_array_assignment
@@ -71,7 +72,12 @@ associative_array_assignment : key ':' value ID '->' associative_array -> ^(TYPE
 key : ( TYPE_ID | ATOM | string | number ) ;
 value : ( TYPE_ID | ATOM | string | number ) ;	 
 
-type_definition : TYPES ':' TYPE_ID assignment (',' assignment)*  ;	
+type_definition : TYPE_ID '=>'! type_members (','! type_members)* ;
+
+type_members : TYPE_ID ID -> ^(TYPE_ID ID)
+             | ID -> ^(ANONYMOUS ID)
+             | assignment
+             ;	
 
 container : '[' container_contents ( ',' container_contents )* ']' ->  ^( LIST container_contents ( container_contents )* )
           ;
@@ -89,9 +95,9 @@ container_access : ID '[' index ']' -> ^(NAME ID) ^(INDEX index ) ;
 
 index :	ID | ATOM | string | number ;
 
-function_signature : TYPES ID '(' function_parameters ')' -> ^(TYPE TYPES) ^(NAME ID) ^(PARAMETERS function_parameters) 
-		               | ID '(' function_parameters ')' -> ^(TYPE ANONYMOUS) ^(NAME ID) ^(PARAMETERS function_parameters)
-		               ;
+function_signature : TYPE_ID ID '(' function_parameters? ')' -> ^(TYPE TYPE_ID) ^(NAME ID) ^(PARAMETERS function_parameters?) 
+		   | ID '(' function_parameters? ')' -> ^(TYPE ANONYMOUS) ^(NAME ID) ^(PARAMETERS function_parameters?)
+		   ;
 
 function_parameters : function_parameter (','! function_parameter)* ;
 
@@ -142,6 +148,8 @@ and_or : '&' | '|' ;
 
 expression : relation (and_or relation)*
            | container_access
+           | TRUE
+           | FALSE
            ;
 
 // LEXER ================================================================
@@ -175,7 +183,7 @@ ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')+ ;
 TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')+ ;
 
 fragment
-TYPES : TYPE_ID ( ':' TYPE_ID )* ;
+TYPES : TYPE_ID ( ';' TYPE_ID )* ;
 
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
