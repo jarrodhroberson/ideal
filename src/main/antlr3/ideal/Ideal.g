@@ -64,7 +64,6 @@ atom_assignment : TYPE_ID ATOM '->' expression -> ^(TYPE TYPE_ID) ^(NAME ATOM) ^
 	        | ATOM '->' expression -> ^(TYPE ANONYMOUS) ^(NAME ATOM) ^(VALUE expression)
 	        ;    
          
-		                 | ID '->' container -> ^(TYPE ANONYMOUS) ^(NAME ID) container
 associative_array_assignment : key ':' value ID '->' associative_array -> ^(TYPE key) ^(TYPE value) ^(NAME ID) associative_array
 		             | ID '->' associative_array -> ^(TYPE ANONYMOUS) ^(TYPE ANONYMOUS) ^(NAME ID) associative_array
 		             ;
