@@ -22,17 +22,19 @@ tokens { ANONYMOUS;
          INDEX;
          VALUE;
          INVOCATION;
-         POWER;
-         MULTIPLY;
-         DIVIDE;
-         MODULO;
-         SUBTRACT;
-         ADD;
          PAIR;
          TRUE;
          FALSE;
          SUPER;
          TYPE_DEF;
+         ADD;
+         SUBTRACT;
+         MULTIPLY;
+         DIVIDE;
+         MODULO;
+         POWER;
+         AND;
+         OR;
        }
 
 @lexer::header {
@@ -133,22 +135,20 @@ term : '('! expression ')'!
      ;
   
 unary : ('+'! | '-'^)? term ;
-power : unary ( ('^' unary)+ -> ^(POWER unary (unary)*) | -> unary ) ;
-mod : power ( ('%' power)+ -> ^(MODULO power (power)*) | -> power ) ;
-mult : mod ( ('*' mod)+ -> ^(MULTIPLY mod (mod)*) | -> mod ) ;
-div : mult ( ('/' mult)+ -> ^(DIVIDE mult (mult)*) | -> mult ) ;
-sub : div ( ('-' div)+ -> ^(SUBTRACT div (div)*) | -> div ) ;
-add : sub ( ('+' sub)+ -> ^(ADD sub (sub)*) | -> sub ) ;
+pow : (unary -> unary) ('^' s=unary -> ^(POWER $pow $s))*;
+mod : (pow -> pow) ('%' s=pow -> ^(MODULO $mod $s))*;
+mult : (mod -> mod) ('*' s=mod -> ^(MULTIPLY $mult $s))*;
+div : (mult -> mult) ('/' s=mult -> ^(DIVIDE $div $s))*;
+sub : (div -> div) ('-' s=div -> ^(SUBTRACT $sub $s))*;
+add : (sub -> sub) ('+' s=sub -> ^(ADD $add $s))*;
 
-relation : add (relationships^ add)* 
-	 | string (relationships^ string)*
-	 | container (relationships^ container)*
-	 | associative_array (relationships^ associative_array)*
-	 ;
+relation : add (relationships^ add)* ;
 
 relationships : '=' | '!=' | '<' | '<=' | '>=' | '>' ;
 	 
-and_or : '&' | '|' ;
+and_or : '&' -> AND 
+       | '|' -> OR
+       ;
 
 expression : relation (and_or relation)*
            | container_access
