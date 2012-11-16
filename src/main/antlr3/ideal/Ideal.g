@@ -46,7 +46,8 @@ assignment : associative_array_assignment -> ^( ASSIGNMENT associative_array_ass
 	         | container_assignment -> ^( ASSIGNMENT container_assignment )
            | id_assignment -> ^( ASSIGNMENT id_assignment )
            | atom_assignment -> ^( ASSIGNMENT atom_assignment )
-           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(NAME function_signature) ( assignment )* expression )
+           | TYPE_ID function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(TYPE TYPE_ID) ^(NAME function_signature) ( assignment )* expression )
+           | function_signature '->' ( assignment ',' )* expression -> ^( FUNCTION ^(TYPE ANONYMOUS) ^(NAME function_signature) ( assignment )* expression )
            ;
 
 id_assignment :	TYPE_ID ID '->' expression -> ^(TYPE TYPE_ID) ^(NAME ID) ^(VALUE expression)

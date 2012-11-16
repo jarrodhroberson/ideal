@@ -1,3 +1,7 @@
+PI -> 3.14.
+
+Number area(Number radius) -> PI * radius^2.
+
 sqr(n) -> n * n.
 
 x -> sqr(3).
