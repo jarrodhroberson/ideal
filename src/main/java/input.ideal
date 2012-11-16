@@ -1,4 +1,6 @@
-Date => Number year,
+Number Year => year.
+
+Number : String Date => Number year,
         month,
         day,
         String toString() -> format(x),

@@ -31,6 +31,8 @@ tokens { ANONYMOUS;
          PAIR;
          TRUE;
          FALSE;
+         SUPER;
+         TYPE_DEF;
        }
 
 @lexer::header {
@@ -72,7 +74,9 @@ associative_array_assignment : key ':' value ID '->' associative_array -> ^(TYPE
 key : ( TYPE_ID | ATOM | string | number ) ;
 value : ( TYPE_ID | ATOM | string | number ) ;	 
 
-type_definition : TYPE_ID '=>'! type_members (','! type_members)* ;
+type_definition : super_types? TYPE_ID '=>' type_members (',' type_members)* -> ^(TYPE_DEF super_types? ^(NAME TYPE_ID) type_members (type_members)*) ;
+
+super_types : TYPE_ID (':' TYPE_ID)* -> ^(SUPER TYPE_ID (TYPE_ID)*) ;
 
 type_members : TYPE_ID ID -> ^(TYPE_ID ID)
              | ID -> ^(ANONYMOUS ID)
