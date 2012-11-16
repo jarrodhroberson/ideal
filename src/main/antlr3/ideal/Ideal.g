@@ -22,6 +22,12 @@ tokens { ANONYMOUS;
          INDEX;
          VALUE;
          INVOCATION;
+         POWER;
+         MULTIPLY;
+         DIVIDE;
+         MODULO;
+         SUBTRACT;
+         ADD;
        }
 
 @lexer::header {
@@ -115,27 +121,39 @@ number : HEX_NUMBER
 
 term : '(' expression ')'
      | number -> ^(NUMBER number)
+term : '('! expression ')'!
+     | number
      | (function_invocation)=> function_invocation 
      | ATOM
      | ID
      ;
-              
-power : term ('^' term)* ;
 
-negation : '!' negation | power ;
 
-unary : ('+'! | '-'^)* negation ;
+  
+unary : ('+'! | '-'^)? term ;
+/*
+power : unary ('^'^ unary)* ;
+mod : power ('%'^ power)* ;
+mult : mod ('*'^ mod)* ;
+div : mult ('/'^ mult)* ;
+sub : div ('-'^ div)* ;
+add : sub ('+'^ sub)* ; */
 
-mult : unary (('*' | '/' | '%' ) unary)* ;
-
-add : mult (('+' | '-') mult)* ;
-
-relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>') add)* ;
+/* power : unary ('^' unary)* -> ^(POWER unary (unary)*) ; */
+power : unary ( ('^' unary)+ -> ^(POWER unary (unary)*) | -> unary ) ;
+mod : power ( ('%' power)+ -> ^(MODULO power (power)*) | -> power ) ;
+mult : mod ( ('*' mod)+ -> ^(MULTIPLY mod (mod)*) | -> mod ) ;
+div : mult ( ('/' mult)+ -> ^(DIVIDE mult (mult)*) | -> mult ) ;
+sub : div ( ('-' div)+ -> ^(SUBTRACT div (div)*) | -> div ) ;
+add : sub ( ('+' sub)+ -> ^(ADD sub (sub)*) | -> sub ) ;
 
 expression : relation (and_or relation)*
            | string  
            | container_access
            ;
+
+relation : add (('=' | '!=' | '<' | '<=' | '>=' | '>')^ add)* ;
+           
 and_or : '&' | '|' ;
 
 // LEXER ================================================================

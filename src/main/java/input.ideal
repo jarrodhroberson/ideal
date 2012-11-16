@@ -2,6 +2,12 @@ PI -> 3.14.
 
 Number area(Number radius) -> PI * radius^2.
 
+b(x) -> 2*(3+4).
+
+c(x) -> x < PI.
+
+Number a(x) -> +x - 1 + 2 * -3 / 4 % 5 ^ 6.
+
 sqr(n) -> n * n.
 
 x -> sqr(3).
