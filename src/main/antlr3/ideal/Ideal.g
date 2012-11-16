@@ -127,15 +127,6 @@ term : '('! expression ')'!
      ;
   
 unary : ('+'! | '-'^)? term ;
-/*
-power : unary ('^'^ unary)* ;
-mod : power ('%'^ power)* ;
-mult : mod ('*'^ mod)* ;
-div : mult ('/'^ mult)* ;
-sub : div ('-'^ div)* ;
-add : sub ('+'^ sub)* ; */
-
-/* power : unary ('^' unary)* -> ^(POWER unary (unary)*) ; */
 power : unary ( ('^' unary)+ -> ^(POWER unary (unary)*) | -> unary ) ;
 mod : power ( ('%' power)+ -> ^(MODULO power (power)*) | -> power ) ;
 mult : mod ( ('*' mod)+ -> ^(MULTIPLY mod (mod)*) | -> mod ) ;
