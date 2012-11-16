@@ -82,9 +82,9 @@ type_definition : super_types? TYPE_ID '=>' expression? (type_members (',' type_
 
 super_types : TYPE_ID (':' TYPE_ID)* -> ^(SUPER TYPE_ID (TYPE_ID)*) ;
 
-type_members : TYPE_ID ID (expression (',' expression)*)? -> ^(TYPE_ID ID ^(FUNCTION (expression (expression)*)? ))
-             | ID (expression (',' expression)*)? -> ^(ANONYMOUS ID ^(FUNCTION (expression (expression)*)? ))
-             | function_assignment
+type_members : assignment 
+             | TYPE_ID ID ('<-' expression (',' expression)*)? -> ^(TYPE_ID ID ^(FUNCTION (expression (expression)*)? ))
+             | ID ('<-' expression (',' expression)*)? -> ^(ANONYMOUS ID ^(FUNCTION (expression (expression)*)? ))
              ;	
 
 container : '[' container_contents ( ',' container_contents )* ']' ->  ^( LIST container_contents ( container_contents )* )
@@ -113,7 +113,7 @@ function_parameter : TYPE_ID ID -> ^(TYPE_ID ID )
 		   | ID -> ^(ANONYMOUS ID)
 		   ;	
 
-function_invocation : ID '(' term (',' term)* ')' -> ^(INVOCATION ^(NAME ID) ^(PARAMETERS term (term)*) ) ;
+function_invocation : ID '(' (term (',' term)*)? ')' -> ^(INVOCATION ^(NAME ID) ^(PARAMETERS (term (term)*)?) ) ;
 
 
 string : UNICODE_STRING ;
