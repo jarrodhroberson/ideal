@@ -1,12 +1,5 @@
 grammar Ideal;
 
-options 
-{
-   output = AST;
-   language = Java;
-   ASTLabelType = CommonTree;
-}
-
 tokens { ANONYMOUS;
          CONTEXT; 
          MAP; 
@@ -36,14 +29,6 @@ tokens { ANONYMOUS;
          AND;
          OR;
        }
-
-@lexer::header {
-  package ideal;
-}
- 
-@parser::header {
-  package ideal;
-}
 
 eval : program EOF! ;
 
