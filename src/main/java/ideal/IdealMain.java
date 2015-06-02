@@ -1,11 +1,15 @@
 package ideal;
 
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.ideal.antlr.IdealLexer;
+import com.ideal.antlr.IdealParser;
+import ideal.com.ideal.antlr.listeners.FunctionAssignmentListener;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class IdealMain
 {
@@ -13,10 +17,9 @@ public class IdealMain
     {
         final InputStream is = IdealMain.class.getResourceAsStream("/input.ideal");
         final ANTLRInputStream ais = new ANTLRInputStream(is);
-        final IdealLexer lexer = new IdealLexer(ais);
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final IdealParser parser = new IdealParser(tokens);
-        final IdealParser.program_return result = parser.program();
-        System.out.println(result.tree.toStringTree());
+        final IdealLexer il = new IdealLexer(ais);
+        final CommonTokenStream cts = new CommonTokenStream(il);
+        final IdealParser ip = new IdealParser(cts);
+        ParseTreeWalker.DEFAULT.walk(new FunctionAssignmentListener(),ip.eval());
     }
 }
