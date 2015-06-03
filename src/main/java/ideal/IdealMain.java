@@ -5,11 +5,10 @@ import java.io.InputStream;
 
 import com.ideal.antlr.IdealLexer;
 import com.ideal.antlr.IdealParser;
-import ideal.com.ideal.antlr.listeners.FunctionAssignmentListener;
+import ideal.antlr.ExpressionVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class IdealMain
 {
@@ -20,6 +19,8 @@ public class IdealMain
         final IdealLexer il = new IdealLexer(ais);
         final CommonTokenStream cts = new CommonTokenStream(il);
         final IdealParser ip = new IdealParser(cts);
-        ParseTreeWalker.DEFAULT.walk(new FunctionAssignmentListener(),ip.eval());
+        //ParseTreeWalker.DEFAULT.walk(new EvaluationListener(), ip.evaluate());
+        final ExpressionVisitor ev = new ExpressionVisitor();
+        System.out.println(ip.evaluate().accept(ev));
     }
 }
