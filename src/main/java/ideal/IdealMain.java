@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import com.ideal.antlr.IdealLexer;
 import com.ideal.antlr.IdealParser;
-import ideal.antlr.ExpressionVisitor;
+import ideal.antlr.TestVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
@@ -20,7 +20,7 @@ public class IdealMain
         final CommonTokenStream cts = new CommonTokenStream(il);
         final IdealParser ip = new IdealParser(cts);
         //ParseTreeWalker.DEFAULT.walk(new EvaluationListener(), ip.evaluate());
-        final ExpressionVisitor ev = new ExpressionVisitor();
+        final TestVisitor ev = new TestVisitor();
         System.out.println(ip.evaluate().accept(ev));
     }
 }
