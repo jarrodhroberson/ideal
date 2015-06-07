@@ -5,7 +5,6 @@ grammar Ideal;
 parse : statement (NL statement)* EOF ;
 
 statement : assignment '.' #assignmentStatement
-          | empty_line     #emptyLineStatement
           ;
 
 assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
@@ -56,8 +55,6 @@ bool : TRUE | FALSE ;
 
 comparison : EQUAL | NOT_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | GREATER_THAN | GREATER_THAN_OR_EQUAL ;
 
-empty_line : WS* NL+ ;
-
 // LEXER ================================================================
 
 LBRACKET : '[' ;
@@ -86,7 +83,7 @@ DECIMAL : INTEGER '.' INTEGER ;
 
 INTEGER : DIGIT+ ;
 
-UNICODE_STRING : '"' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '"';
+UNICODE_STRING : '\'' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '\'';
 
 TRUE : 'TRUE' ;
 FALSE : 'FALSE' ;
@@ -111,6 +108,6 @@ ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')+ ;
 //ID lowerCamelCaseAlphaNumeric_
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
-NL : '\n';
+NL : '\n'+ ;
 
 COMMENT : '/*' ~[\r\n]* '*/' '\r'? '\n' ;

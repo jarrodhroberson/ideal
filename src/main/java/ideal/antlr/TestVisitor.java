@@ -32,7 +32,7 @@ public class TestVisitor extends IdealBaseVisitor<String>
             if (!isNullOrEmpty(s))
             {
                 sb.append(s);
-                if (sci.hasNext()) { sb.append(";\n"); }
+                if (sci.hasNext()) { sb.append("\n"); }
             }
         }
         return sb.toString();
@@ -42,12 +42,6 @@ public class TestVisitor extends IdealBaseVisitor<String>
     public String visitAssignmentStatement(IdealParser.AssignmentStatementContext ctx)
     {
         return this.visit(ctx.assignment());
-    }
-
-    @Override
-    public String visitEmptyLineStatement(IdealParser.EmptyLineStatementContext ctx)
-    {
-        return this.visit(ctx.empty_line());
     }
 
     @Override
@@ -84,16 +78,10 @@ public class TestVisitor extends IdealBaseVisitor<String>
         while(kvci.hasNext())
         {
             final IdealParser.Key_valueContext kvc = kvci.next();
-            sb.append(ctx.key_value());
+            sb.append(this.visit(kvc));
             if (kvci.hasNext()) { sb.append(" AND "); }
         }
         return sb.toString();
-    }
-
-    @Override
-    public String visitEmpty_line(IdealParser.Empty_lineContext ctx)
-    {
-        return "/* -------- */";
     }
 
     @Override
@@ -170,7 +158,7 @@ public class TestVisitor extends IdealBaseVisitor<String>
     {
         final String id = ctx.ATOM().getText();
         final String expression = this.visit(ctx.expression());
-        return id + " = " + expression + ";";
+        return id + " = " + expression;
     }
 
     @Override
