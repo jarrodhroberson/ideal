@@ -2,48 +2,43 @@ grammar Ideal;
 
 // expressions
 
-evaluate : (statement)+ EOF ;
+parse : statement (NL statement)* EOF ;
 
-statement : assignment
-          | ATOM
-          | COMMENT
+statement : assignment '.' #assignmentStatement
+          | empty_line     #emptyLineStatement
           ;
 
-//function_assignment : ID '=>' function_invocation ;
-
-//function_invocation : ID '(' (term (',' term)*)? ')' ;
-
-function_definition : function_signature '=>' expression (',\n' expression)* '.\n' ;
-
-function_signature : function_id LPAREN ID (',' ID)*? RPAREN ;
-
-function_id : ID ;
-
-assignment : function_definition #functionDefinition
-           | id_assignment       #idAssignment
-           | atom_assignment     #atomAssignment
+assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
+           | ID LPAREN pattern_match RPAREN (assignment ',' NL )*  expression #patternMatchAssignment
+           | ID '->' expression   #idAssignment
+           | ATOM '->' expression #atomAssignment
            ;
 
-id_assignment : ID '=>' expression NL ;
+pattern_match : key_value (',' key_value )* ;
 
-atom_assignment : ATOM '=>' expression;
+key_value : ID ':' expression #expressionKeyValue
+          ;
 
-boolean_expression : expression comparison expression ;
+parameters : ID (',' ID)* ;
 
-expression : expression POWER expression    #powerExpression
-           | expression MULTIPLY expression #multiplyExpression
-           | expression DIVIDE expression   #divideExpression
-           | expression ADD expression      #addExpression
-           | expression SUBTRACT expression #substractExpression
-           | LPAREN expression RPAREN       #parenExpression
-           | unary                          #unaryExpression
+expression : expression POWER expression      #powerExpression
+           | expression MULTIPLY expression   #multiplyExpression
+           | expression DIVIDE expression     #divideExpression
+           | expression ADD expression        #addExpression
+           | expression SUBTRACT expression   #substractExpression
+           | LPAREN expression RPAREN         #parenExpression
+           | expression comparison expression #booleanExpression
+           | unary                            #unaryExpression
            ;
 
 unary : ('+'|'-')? term ;
 
-term : number #numberTerm
-     | string #stringTerm
-     | ID     #idTerm
+term : ID LPAREN key_value (',' key_value )* RPAREN #invocationTerm
+     | number                                       #numberTerm
+     | string                                       #stringTerm
+     | bool                                         #booleanTerm
+     | ID                                           #idTerm
+     | ATOM                                         #atomTerm
      ;
 
 string : UNICODE_STRING ;
@@ -57,7 +52,11 @@ and_or : AND #and
        | OR  #or
        ;
 
+bool : TRUE | FALSE ;
+
 comparison : EQUAL | NOT_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | GREATER_THAN | GREATER_THAN_OR_EQUAL ;
+
+empty_line : WS* NL+ ;
 
 // LEXER ================================================================
 
@@ -109,8 +108,9 @@ DIGIT : [0-9] ;
 //ATOM is all UPPER_CASE
 ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')+ ;
 
+//ID lowerCamelCaseAlphaNumeric_
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
-NL : '\n' ;
+NL : '\n';
 
-COMMENT : '/*' .*? '*/' ;
+COMMENT : '/*' ~[\r\n]* '*/' '\r'? '\n' ;

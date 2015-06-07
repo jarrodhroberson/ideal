@@ -1,15 +1,19 @@
 package ideal.antlr;
 
-import static java.lang.String.format;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.ideal.antlr.IdealBaseVisitor;
+import com.ideal.antlr.IdealParser;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.base.Joiner;
-import com.ideal.antlr.IdealBaseVisitor;
-import com.ideal.antlr.IdealParser;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.lang.String.format;
 
 public class TestVisitor extends IdealBaseVisitor<String>
 {
@@ -18,71 +22,133 @@ public class TestVisitor extends IdealBaseVisitor<String>
     private static int RIGHT = 1;
 
     @Override
-    public String visitEvaluate(final IdealParser.EvaluateContext ctx)
+    public String visitParse(final IdealParser.ParseContext ctx)
     {
         final StringBuilder sb = new StringBuilder();
-        for (IdealParser.StatementContext sc : ctx.statement())
+        final Iterator<IdealParser.StatementContext> sci = ctx.statement().iterator();
+        while (sci.hasNext())
         {
-            sb.append(this.visit(sc)).append('\n');
+            final String s = this.visit(sci.next());
+            if (!isNullOrEmpty(s))
+            {
+                sb.append(s);
+                if (sci.hasNext()) { sb.append(";\n"); }
+            }
         }
         return sb.toString();
     }
 
     @Override
-    public String visitFunctionDefinition(final IdealParser.FunctionDefinitionContext ctx)
-    {
-        return this.visit(ctx.function_definition());
-    }
-
-    @Override
-    public String visitFunction_definition(final IdealParser.Function_definitionContext ctx)
-    {
-        final String fs = this.visit(ctx.function_signature());
-        final List<String> expressions = new ArrayList<String>();
-        for (final IdealParser.ExpressionContext e : ctx.expression())
-        {
-            expressions.add(this.visit(e));
-        }
-        final String exp = Joiner.on(";\n").join(expressions) + ";\n";
-        return fs + "\n{\n" + exp + "}";
-    }
-
-    @Override
-    public String visitUnaryExpression(final IdealParser.UnaryExpressionContext ctx)
-    {
-        return ctx.getText();
-    }
-
-    @Override
-    public String visitStatement(final IdealParser.StatementContext ctx)
+    public String visitAssignmentStatement(IdealParser.AssignmentStatementContext ctx)
     {
         return this.visit(ctx.assignment());
     }
 
     @Override
-    public String visitNumberTerm(final IdealParser.NumberTermContext ctx)
+    public String visitEmptyLineStatement(IdealParser.EmptyLineStatementContext ctx)
+    {
+        return this.visit(ctx.empty_line());
+    }
+
+    @Override
+    public String visitFunctionAssignment(IdealParser.FunctionAssignmentContext ctx)
+    {
+        final String name = ctx.ID().getText();
+        final String parameters = this.visit(ctx.parameters());
+        final List<String> body = Lists.transform(ctx.assignment(), new Function<IdealParser.AssignmentContext, String>() {
+            @Nullable
+            @Override
+            public String apply(IdealParser.AssignmentContext input)
+            {
+                return TestVisitor.this.visit(input);
+            }
+        });
+        final String expression = this.visit(ctx.expression());
+        return format("ASSIGN %s WITH %s FROM %s RETURNING %s", name, parameters, body, expression);
+    }
+
+    @Override
+    public String visitPatternMatchAssignment(IdealParser.PatternMatchAssignmentContext ctx)
+    {
+        final String name = ctx.ID().getText();
+        final String pattern = this.visit(ctx.pattern_match());
+        final String expression = this.visit(ctx.expression());
+        return format("IF %s MATCHES %s RETURN %s", name, pattern, expression);
+    }
+
+    @Override
+    public String visitPattern_match(IdealParser.Pattern_matchContext ctx)
+    {
+        final StringBuilder sb = new StringBuilder();
+        final Iterator<IdealParser.Key_valueContext> kvci = ctx.key_value().iterator();
+        while(kvci.hasNext())
+        {
+            final IdealParser.Key_valueContext kvc = kvci.next();
+            sb.append(ctx.key_value());
+            if (kvci.hasNext()) { sb.append(" AND "); }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String visitEmpty_line(IdealParser.Empty_lineContext ctx)
+    {
+        return "/* -------- */";
+    }
+
+    @Override
+    public String visitParameters(IdealParser.ParametersContext ctx)
+    {
+        final List<String> ls = new ArrayList<String>();
+        for (final TerminalNode tn : ctx.ID())
+        {
+            ls.add(tn.getText());
+        }
+        return Joiner.on(',').join(ls);
+    }
+
+    @Override
+    public String visitBooleanExpression(IdealParser.BooleanExpressionContext ctx)
+    {
+        return this.visit(ctx.comparison());
+    }
+
+    @Override
+    public String visitInvocationTerm(IdealParser.InvocationTermContext ctx)
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("CALL ").append(ctx.ID().getText());
+        sb.append(" WITH ");
+        for (final IdealParser.Key_valueContext kvc : ctx.key_value())
+        {
+            sb.append(this.visit(kvc));
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String visitBooleanTerm(IdealParser.BooleanTermContext ctx)
+    {
+        return this.visit(ctx.bool());
+    }
+
+    @Override
+    public String visitBool(IdealParser.BoolContext ctx)
     {
         return ctx.getText();
     }
 
     @Override
-    public String visitFunction_id(final IdealParser.Function_idContext ctx)
+    public String visitUnaryExpression(final IdealParser.UnaryExpressionContext ctx)
     {
-        return ctx.ID().getText();
+        return this.visit(ctx.unary());
     }
 
+
     @Override
-    public String visitFunction_signature(final IdealParser.Function_signatureContext ctx)
+    public String visitNumberTerm(final IdealParser.NumberTermContext ctx)
     {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(this.visit(ctx.function_id())).append("(");
-        final Iterator<TerminalNode> iter = ctx.ID().iterator();
-        sb.append(iter.next().getText()).append(")");
-        while(iter.hasNext())
-        {
-            sb.append(iter.next().getText());
-        }
-        return sb.toString();
+        return this.visit(ctx.number());
     }
 
     @Override
@@ -94,29 +160,17 @@ public class TestVisitor extends IdealBaseVisitor<String>
     @Override
     public String visitIdAssignment(final IdealParser.IdAssignmentContext ctx)
     {
-        return this.visit(ctx.id_assignment());
-    }
-
-    @Override
-    public String visitId_assignment(final IdealParser.Id_assignmentContext ctx)
-    {
         final String id = ctx.ID().getText();
         final String expression = this.visit(ctx.expression());
-        return id + " = " + expression + ";";
+        return "ASSIGN " + id + " AS " + expression;
     }
 
     @Override
     public String visitAtomAssignment(final IdealParser.AtomAssignmentContext ctx)
     {
-        return this.visit(ctx.atom_assignment());
-    }
-
-    @Override
-    public String visitAtom_assignment(final IdealParser.Atom_assignmentContext ctx)
-    {
-        final String l = ctx.ATOM().getText();
-        final String r = this.visit(ctx.expression());
-        return format("%s => %s", l, r);
+        final String id = ctx.ATOM().getText();
+        final String expression = this.visit(ctx.expression());
+        return id + " = " + expression + ";";
     }
 
     @Override
@@ -131,12 +185,6 @@ public class TestVisitor extends IdealBaseVisitor<String>
         final String l = this.visit(ctx.expression(LEFT));
         final String r = this.visit(ctx.expression(RIGHT));
         return format("%s %s %s", l, "POWER_OF", r);
-    }
-
-    @Override
-    public String visitBoolean_expression(final IdealParser.Boolean_expressionContext ctx)
-    {
-        return ctx.getText();
     }
 
     @Override
@@ -172,56 +220,68 @@ public class TestVisitor extends IdealBaseVisitor<String>
     }
 
     @Override
+    public String visitExpressionKeyValue(IdealParser.ExpressionKeyValueContext ctx)
+    {
+        return format("%s = %s", ctx.ID().getText(), this.visit(ctx.expression()));
+    }
+
+    @Override
+    public String visitAtomTerm(IdealParser.AtomTermContext ctx)
+    {
+        return ctx.ATOM().getText();
+    }
+
+    @Override
     public String visitIdTerm(final IdealParser.IdTermContext ctx)
     {
-        return ctx.getText();
+        return ctx.ID().getText();
     }
 
     @Override
     public String visitUnary(final IdealParser.UnaryContext ctx)
     {
-        return ctx.getText();
+        return this.visit(ctx.term());
     }
 
     @Override
     public String visitStringTerm(final IdealParser.StringTermContext ctx)
     {
-        return ctx.getText();
+        return this.visit(ctx.string());
     }
 
     @Override
     public String visitDecimalNumber(final IdealParser.DecimalNumberContext ctx)
     {
-        return ctx.getText();
+        return ctx.DECIMAL().getText();
     }
 
     @Override
     public String visitOr(final IdealParser.OrContext ctx)
     {
-        return "||";
+        return ctx.OR().getText();
     }
 
     @Override
     public String visitAnd(final IdealParser.AndContext ctx)
     {
-        return "&&";
+        return ctx.AND().getText();
     }
 
     @Override
     public String visitIntegerNumber(final IdealParser.IntegerNumberContext ctx)
     {
-        return ctx.getText();
+        return ctx.INTEGER().getText();
     }
 
     @Override
     public String visitHexNumber(final IdealParser.HexNumberContext ctx)
     {
-        return ctx.getText();
+        return ctx.HEX_NUMBER().getText();
     }
 
     @Override
     public String visitString(final IdealParser.StringContext ctx)
     {
-        return ctx.getText();
+        return ctx.UNICODE_STRING().getText();
     }
 }

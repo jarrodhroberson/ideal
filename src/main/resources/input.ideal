@@ -1,4 +1,11 @@
-sqr(x) => x * x,
-          x + 1.
-x => 1 + 2 * 3 - ( 3.14^2 )
-y => a + b / c
+PI -> 3.14159265359.
+
+sqr(x) x * x.
+z -> sqr(x:3).
+
+circumference(r) PI * sqr(x:r).
+
+fib(x) fib(x:x-1) + fib(x:x-2).
+fib(x:2) 1.
+fib(x:1) 1.
+fib(x:0) 0.
