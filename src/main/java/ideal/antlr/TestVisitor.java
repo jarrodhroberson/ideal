@@ -39,6 +39,32 @@ public class TestVisitor extends IdealBaseVisitor<String>
     }
 
     @Override
+    public String visitArrayIndexAssignment(IdealParser.ArrayIndexAssignmentContext ctx)
+    {
+        return format("ASSIGN INDEX %s OF %s TO %s", this.visit(ctx.expression(LEFT)), ctx.ID().getText(), this.visit(ctx.expression(RIGHT)));
+    }
+
+    @Override
+    public String visitArrayAssignment(IdealParser.ArrayAssignmentContext ctx)
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(ctx.ID().getText()).append(" AS ");
+        final Iterator<IdealParser.ExpressionContext> eci = ctx.expression().iterator();
+        while (eci.hasNext())
+        {
+            sb.append(this.visit(eci.next()));
+            if (eci.hasNext()) { sb.append(","); }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String visitArrayElementExpression(IdealParser.ArrayElementExpressionContext ctx)
+    {
+        return format("INDEX %s OF %s", this.visit(ctx.expression()), ctx.ID().getText());
+    }
+
+    @Override
     public String visitAssignmentStatement(IdealParser.AssignmentStatementContext ctx)
     {
         return this.visit(ctx.assignment());

@@ -4,19 +4,19 @@ grammar Ideal;
 
 parse : statement (NL statement)* EOF ;
 
-statement : assignment '.' #assignmentStatement
-          ;
+statement : assignment '.' #assignmentStatement ;
 
 assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
            | ID LPAREN pattern_match RPAREN (assignment ',' NL )*  expression #patternMatchAssignment
-           | ID '->' expression   #idAssignment
-           | ATOM '->' expression #atomAssignment
+           | ID '->' LBRACKET (expression (',' expression)*)? RBRACKET        #arrayAssignment
+           | ID LBRACKET expression RBRACKET '->' expression                  #arrayIndexAssignment
+           | ID '->' expression                                               #idAssignment
+           | ATOM '->' expression                                             #atomAssignment
            ;
 
 pattern_match : key_value (',' key_value )* ;
 
-key_value : ID ':' expression #expressionKeyValue
-          ;
+key_value : ID ':' expression #expressionKeyValue ;
 
 parameters : ID (',' ID)* ;
 
@@ -26,6 +26,7 @@ expression : expression POWER expression      #powerExpression
            | expression ADD expression        #addExpression
            | expression SUBTRACT expression   #substractExpression
            | LPAREN expression RPAREN         #parenExpression
+           | ID LBRACKET expression RBRACKET  #arrayElementExpression
            | expression comparison expression #booleanExpression
            | unary                            #unaryExpression
            ;
@@ -88,7 +89,8 @@ UNICODE_STRING : '\'' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '\'';
 TRUE : 'TRUE' ;
 FALSE : 'FALSE' ;
 
-WS : (' '|'\r'|'\t')+ -> skip ; // ignore whitespace
+// ignore whitespace
+WS : (' '|'\r'|'\t')+ -> skip ;
 
 fragment
 ESC : '\\' ( UNI_ESC |'b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\' );
