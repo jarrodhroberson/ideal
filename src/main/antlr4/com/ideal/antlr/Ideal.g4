@@ -20,7 +20,10 @@ type_assignment : TYPE_ID NL? LBRACE NL? member (',' NL? member)* NL? RBRACE ;
 
 member : ID (constraint (and_or ID constraint)*)? ;
 
-constraint : comparison expression ;
+constraint : comparison expression
+           | expression
+           ;
+
 
 pattern_match : key_value (',' key_value )* ;
 
@@ -28,9 +31,9 @@ key_value : ID ':' expression #expressionKeyValue ;
 
 parameters : ID (',' ID)* ;
 
-boolean_expression : expression comparison expression ;
-
-expression : expression POWER expression      #powerExpression
+expression : expression comparison expression #booleanExpression
+           | expression POWER expression      #powerExpression
+           | expression MODULO expression     #moduloExpression
            | expression MULTIPLY expression   #multiplyExpression
            | expression DIVIDE expression     #divideExpression
            | expression ADD expression        #addExpression

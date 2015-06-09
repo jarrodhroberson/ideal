@@ -80,7 +80,16 @@ public class TestVisitor extends IdealBaseVisitor<String>
     @Override
     public String visitConstraint(IdealParser.ConstraintContext ctx)
     {
-        return this.visit(ctx.comparison()) + " " + this.visit(ctx.expression());
+        final StringBuilder sb = new StringBuilder();
+        if (ctx.comparison() != null)
+        {
+            sb.append(this.visit(ctx.comparison()));
+        }
+        if (ctx.expression() != null)
+        {
+            sb.append(this.visit(ctx.expression()));
+        }
+        return sb.toString();
     }
 
     @Override
@@ -168,7 +177,15 @@ public class TestVisitor extends IdealBaseVisitor<String>
     }
 
     @Override
-    public String visitBoolean_expression(IdealParser.Boolean_expressionContext ctx)
+    public String visitModuloExpression(IdealParser.ModuloExpressionContext ctx)
+    {
+        final String l = this.visit(ctx.expression(LEFT));
+        final String r = this.visit(ctx.expression(RIGHT));
+        return format("%s MODULO %s", l, r);
+    }
+
+    @Override
+    public String visitBooleanExpression(IdealParser.BooleanExpressionContext ctx)
     {
         final String l = this.visit(ctx.expression(LEFT));
         final String c = this.visit(ctx.comparison());

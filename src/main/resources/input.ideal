@@ -14,6 +14,8 @@ fib(x:2) 1.
 fib(x:1) 1.
 fib(x:0) 0.
 
+isEven(n) (n % 2) = 0.
+
 Coordinate2D { x, y }
 
 Coordinate3D { x, y, z }
@@ -22,7 +24,7 @@ Date
 {
     y >= 0,
     m >= 1 & m <= 12,
-    d >= 1 & d <= 31
+    d isValidDay(d:d)
 }
 
 Time
