@@ -42,12 +42,12 @@ public class TestVisitor extends IdealBaseVisitor<String>
     public String visitType_assignment(IdealParser.Type_assignmentContext ctx)
     {
         final String name = ctx.TYPE_ID().getText();
-        final StringBuilder sb = new StringBuilder();
+        final List<String> members = new ArrayList<String>();
         for (final IdealParser.MemberContext mc : ctx.member())
         {
-            sb.append(this.visit(mc));
+            members.add(this.visit(mc));
         }
-        return format("TYPE %s { %s }", name, sb.toString());
+        return format("TYPE %s { %s }", name, Joiner.on(",\n").join(members));
     }
 
     @Override
@@ -57,15 +57,18 @@ public class TestVisitor extends IdealBaseVisitor<String>
         for (int i=0; i < ctx.ID().size(); i++)
         {
             sb.append(ctx.ID(i).getText());
-            sb.append(" ");
-            sb.append(this.visit(ctx.constraint(i)));
-            if (i < ctx.and_or().size())
+            if (!ctx.constraint().isEmpty())
             {
-                sb.append(" ").append(ctx.and_or(i).getText());
+                sb.append(" ");
+                sb.append(this.visit(ctx.constraint(i)));
+                if (i < ctx.and_or().size())
+                {
+                    sb.append(" ").append(ctx.and_or(i).getText());
+                }
+                sb.append(" ");
             }
-            sb.append(" ");
         }
-        return sb.toString() + "\n";
+        return sb.toString();
     }
 
     @Override

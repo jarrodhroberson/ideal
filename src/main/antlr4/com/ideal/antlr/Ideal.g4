@@ -16,9 +16,9 @@ assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #f
            | ATOM '=>' expression                                             #atomAssignment
            ;
 
-type_assignment : TYPE_ID LBRACE NL? member (',' NL? member)* NL? RBRACE ;
+type_assignment : TYPE_ID NL? LBRACE NL? member (',' NL? member)* NL? RBRACE ;
 
-member : ID constraint (and_or ID constraint)* ;
+member : ID (constraint (and_or ID constraint)*)? ;
 
 constraint : comparison expression ;
 
