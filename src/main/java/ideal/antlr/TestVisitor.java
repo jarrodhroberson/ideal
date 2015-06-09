@@ -39,6 +39,48 @@ public class TestVisitor extends IdealBaseVisitor<String>
     }
 
     @Override
+    public String visitType_assignment(IdealParser.Type_assignmentContext ctx)
+    {
+        final String name = ctx.TYPE_ID().getText();
+        final StringBuilder sb = new StringBuilder();
+        for (final IdealParser.MemberContext mc : ctx.member())
+        {
+            sb.append(this.visit(mc));
+        }
+        return format("TYPE %s { %s }", name, sb.toString());
+    }
+
+    @Override
+    public String visitMember(IdealParser.MemberContext ctx)
+    {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i < ctx.ID().size(); i++)
+        {
+            sb.append(ctx.ID(i).getText());
+            sb.append(" ");
+            sb.append(this.visit(ctx.constraint(i)));
+            if (i < ctx.and_or().size())
+            {
+                sb.append(" ").append(ctx.and_or(i).getText());
+            }
+            sb.append(" ");
+        }
+        return sb.toString() + "\n";
+    }
+
+    @Override
+    public String visitTypeAssignmentStatement(IdealParser.TypeAssignmentStatementContext ctx)
+    {
+        return this.visit(ctx.type_assignment());
+    }
+
+    @Override
+    public String visitConstraint(IdealParser.ConstraintContext ctx)
+    {
+        return this.visit(ctx.comparison()) + " " + this.visit(ctx.expression());
+    }
+
+    @Override
     public String visitArrayIndexAssignment(IdealParser.ArrayIndexAssignmentContext ctx)
     {
         return format("ASSIGN INDEX %s OF %s TO %s", this.visit(ctx.expression(LEFT)), ctx.ID().getText(), this.visit(ctx.expression(RIGHT)));
@@ -75,7 +117,8 @@ public class TestVisitor extends IdealBaseVisitor<String>
     {
         final String name = ctx.ID().getText();
         final String parameters = this.visit(ctx.parameters());
-        final List<String> body = Lists.transform(ctx.assignment(), new Function<IdealParser.AssignmentContext, String>() {
+        final List<String> body = Lists.transform(ctx.assignment(), new Function<IdealParser.AssignmentContext, String>()
+        {
             @Nullable
             @Override
             public String apply(IdealParser.AssignmentContext input)
@@ -101,7 +144,7 @@ public class TestVisitor extends IdealBaseVisitor<String>
     {
         final StringBuilder sb = new StringBuilder();
         final Iterator<IdealParser.Key_valueContext> kvci = ctx.key_value().iterator();
-        while(kvci.hasNext())
+        while (kvci.hasNext())
         {
             final IdealParser.Key_valueContext kvc = kvci.next();
             sb.append(this.visit(kvc));
@@ -122,9 +165,12 @@ public class TestVisitor extends IdealBaseVisitor<String>
     }
 
     @Override
-    public String visitBooleanExpression(IdealParser.BooleanExpressionContext ctx)
+    public String visitBoolean_expression(IdealParser.Boolean_expressionContext ctx)
     {
-        return this.visit(ctx.comparison());
+        final String l = this.visit(ctx.expression(LEFT));
+        final String c = this.visit(ctx.comparison());
+        final String r = this.visit(ctx.expression(RIGHT));
+        return format("%s %s %s", l, c, r);
     }
 
     @Override

@@ -4,21 +4,31 @@ grammar Ideal;
 
 parse : statement (NL statement)* EOF ;
 
-statement : assignment '.' #assignmentStatement ;
+statement : assignment '.'  #assignmentStatement
+          | type_assignment #typeAssignmentStatement
+          ;
 
 assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
            | ID LPAREN pattern_match RPAREN (assignment ',' NL )*  expression #patternMatchAssignment
-           | ID '->' LBRACKET (expression (',' expression)*)? RBRACKET        #arrayAssignment
-           | ID LBRACKET expression RBRACKET '->' expression                  #arrayIndexAssignment
-           | ID '->' expression                                               #idAssignment
-           | ATOM '->' expression                                             #atomAssignment
+           | ID '=>' LBRACKET (expression (',' expression)*)? RBRACKET        #arrayAssignment
+           | ID LBRACKET expression RBRACKET '=>' expression                  #arrayIndexAssignment
+           | ID '=>' expression                                               #idAssignment
+           | ATOM '=>' expression                                             #atomAssignment
            ;
+
+type_assignment : TYPE_ID LBRACE NL? member (',' NL? member)* NL? RBRACE ;
+
+member : ID constraint (and_or ID constraint)* ;
+
+constraint : comparison expression ;
 
 pattern_match : key_value (',' key_value )* ;
 
 key_value : ID ':' expression #expressionKeyValue ;
 
 parameters : ID (',' ID)* ;
+
+boolean_expression : expression comparison expression ;
 
 expression : expression POWER expression      #powerExpression
            | expression MULTIPLY expression   #multiplyExpression
@@ -27,7 +37,6 @@ expression : expression POWER expression      #powerExpression
            | expression SUBTRACT expression   #substractExpression
            | LPAREN expression RPAREN         #parenExpression
            | ID LBRACKET expression RBRACKET  #arrayElementExpression
-           | expression comparison expression #booleanExpression
            | unary                            #unaryExpression
            ;
 
@@ -58,6 +67,10 @@ comparison : EQUAL | NOT_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | GREATER_THAN |
 
 // LEXER ================================================================
 
+LSHIFT : '<<' ;
+RSHIFT : '>>' ;
+LBRACE : '{' ;
+RBRACE : '}' ;
 LBRACKET : '[' ;
 RBRACKET : ']' ;
 LPAREN : '(' ;
@@ -104,8 +117,11 @@ HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 fragment
 DIGIT : [0-9] ;
 
-//ATOM is all UPPER_CASE
-ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')+ ;
+//ATOM is all UPPER_CASE_NUMERIC_
+ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ;
+
+// TypeId is UpperCamelCaseNumeric
+TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
 //ID lowerCamelCaseAlphaNumeric_
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
