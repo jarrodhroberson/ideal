@@ -8,8 +8,7 @@ statement : assignment '.'  #assignmentStatement
           | type_assignment #typeAssignmentStatement
           ;
 
-assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
-           | ID LPAREN pattern_match RPAREN (assignment ',' NL )*  expression #patternMatchAssignment
+assignment : ID function_definition                                           #functionAssignment
            | ID '=>' LBRACKET (expression (',' expression)*)? RBRACKET        #arrayAssignment
            | ID LBRACKET expression RBRACKET '=>' expression                  #arrayIndexAssignment
            | ID '=>' expression                                               #idAssignment
@@ -24,12 +23,11 @@ constraint : comparison expression
            | expression
            ;
 
-
 pattern_match : key_value (',' key_value )* ;
 
 key_value : ID ':' expression #expressionKeyValue ;
 
-parameters : ID (',' ID)* ;
+parameters : ID (',' ID NL?)* ;
 
 expression : expression comparison expression #booleanExpression
            | expression POWER expression      #powerExpression
@@ -40,18 +38,17 @@ expression : expression comparison expression #booleanExpression
            | expression SUBTRACT expression   #substractExpression
            | LPAREN expression RPAREN         #parenExpression
            | ID LBRACKET expression RBRACKET  #arrayElementExpression
-           | unary                            #unaryExpression
            ;
 
-unary : ('+'|'-')? term ;
-
-term : ID LPAREN key_value (',' key_value )* RPAREN #invocationTerm
-     | number                                       #numberTerm
-     | string                                       #stringTerm
-     | bool                                         #booleanTerm
-     | ID                                           #idTerm
-     | ATOM                                         #atomTerm
+term : ID? LPAREN key_value (',' key_value )* RPAREN #invocationTerm
+     | ('+'|'-')? number                             #numberTerm
+     | string                                        #stringTerm
+     | bool                                          #booleanTerm
+     | ID                                            #idTerm
+     | ATOM                                          #atomTerm
      ;
+
+function_definition : LPAREN (parameters|pattern_match) RPAREN (assignment ',' NL )*  expression ;
 
 string : UNICODE_STRING ;
 
