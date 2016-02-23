@@ -24,7 +24,6 @@ constraint : comparison expression
            | expression
            ;
 
-
 pattern_match : key_value (',' key_value )* ;
 
 key_value : ID ':' expression #expressionKeyValue ;
@@ -120,14 +119,14 @@ HEX_DIGIT : (DIGIT|'a'..'f'|'A'..'F') ;
 fragment
 DIGIT : [0-9] ;
 
-//ATOM is all UPPER_CASE_NUMERIC_
+//ATOM is all UPPER_CASE_NUMERIC
 ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ;
 
 // TypeId is UpperCamelCaseNumeric
 TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
-//ID lowerCamelCaseAlphaNumeric_
-ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
+//ID lowerCamelCaseAlphaNumeric
+ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
 NL : '\n'+ ;
 

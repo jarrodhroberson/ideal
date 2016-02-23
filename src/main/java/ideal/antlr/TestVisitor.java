@@ -132,7 +132,6 @@ public class TestVisitor extends IdealBaseVisitor<String>
         final List<String> body = Lists.transform(ctx.assignment(), new Function<IdealParser.AssignmentContext, String>()
         {
             @Nullable
-            @Override
             public String apply(IdealParser.AssignmentContext input)
             {
                 return TestVisitor.this.visit(input);
