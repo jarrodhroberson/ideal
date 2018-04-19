@@ -2,10 +2,10 @@ grammar Ideal;
 
 // expressions
 
-parse : statement (NL statement)* EOF ;
+parse : statement (NL+ statement)* EOF ;
 
-statement : assignment '.'  #assignmentStatement
-          | type_assignment #typeAssignmentStatement
+statement : assignment NL  #assignmentStatement
+          | type_assignment  #typeAssignmentStatement
           ;
 
 assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
@@ -65,10 +65,25 @@ and_or : AND #and
 
 bool : TRUE | FALSE ;
 
-comparison : EQUAL | NOT_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | GREATER_THAN | GREATER_THAN_OR_EQUAL ;
+comparison : EQUAL
+           | NOT_EQUAL
+           | LESS_THAN
+           | LESS_THAN_OR_EQUAL
+           | GREATER_THAN
+           | GREATER_THAN_OR_EQUAL
+           | COMPARE
+           | between
+           ;
+
+between : term '|' term '|' term   #betweenInclusive
+        | term '>|' term '|' term  #betweenLowerExclusiveUpperInclusive
+        | term '|' term '|<' term  #betweenLowerInclusiveUpperExclusive
+        | term '>|' term '|<' term #betweenExclusive
+        ;
 
 // LEXER ================================================================
 
+COMPARE : '<=>' ;
 LSHIFT : '<<' ;
 RSHIFT : '>>' ;
 LBRACE : '{' ;
@@ -89,9 +104,12 @@ LESS_THAN_OR_EQUAL : '<=' ;
 LESS_THAN : '<' ;
 NOT_EQUAL : '!=' ;
 EQUAL : '=' ;
-AND : '&' ;
-OR : '|' ;
+AND : '&' | '&&' ;
+OR : '|' | '||' ;
 AT : '@' ;
+COLON : ':' ;
+COMMA : ',' ;
+SEMI : ';' ;
 
 HEX_NUMBER : '0x' HEX_DIGIT+;
 
@@ -99,7 +117,7 @@ DECIMAL : INTEGER '.' INTEGER ;
 
 INTEGER : DIGIT+ ;
 
-UNICODE_STRING : '\'' ( ESC | ~('\u0000'..'\u001f' | '\\' | '\"' ) )* '\'';
+UNICODE_STRING : '\'' ( ESC | ~('\u0000'..'\u001f' | '\\' | '"' ) )* '\'';
 
 TRUE : 'TRUE' ;
 FALSE : 'FALSE' ;
@@ -108,7 +126,7 @@ FALSE : 'FALSE' ;
 WS : (' '|'\r'|'\t')+ -> skip ;
 
 fragment
-ESC : '\\' ( UNI_ESC |'b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\' );
+ESC : '\\' ( UNI_ESC |'b'|'t'|'n'|'f'|'r'|'"'|'\''|'\\' );
 
 fragment
 UNI_ESC : 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT;
@@ -128,6 +146,6 @@ TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 //ID lowerCamelCaseAlphaNumeric
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
 
-NL : '\n'+ ;
+NL : '\n' ;
 
 COMMENT : '/*' ~[\r\n]* '*/' '\r'? '\n' ;

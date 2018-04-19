@@ -1,35 +1,15 @@
-nums => [1,2,3,4,5].
-three => nums[2].
-nums[4] => 'six'.
+nums => [1,2,3,4,5]
 
-PI => 3.14159265359.
+three => nums[2]
 
-sqr(x) x * x.
-z => sqr(x:3).
+nums[4] => 'six'
 
-circumference(r) PI * sqr(x:r).
+PI => 3.14159265359
 
-fib(x) fib(x:x-1) + fib(x:x-2).
-fib(x:2) 1.
-fib(x:1) 1.
-fib(x:0) 0.
+sqr(x) x * x
 
-isEven(n) (n % 2) = 0.
+z => sqr(x:3)
 
-Coordinate2D { x, y }
+circumference(r) PI * sqr(x:r)
 
-Coordinate3D { x, y, z }
-
-Date
-{
-    y >= 0,
-    m >= 1 & m <= 12,
-    d isValidDay(d:d)
-}
-
-Time
-{
-    h >= 0 & h <= 24,
-    m >= 0 & m <= 60,
-    s >= 0 & s <= 60
-}
+isEven(n) (n % 2) = 0
