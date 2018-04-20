@@ -1,0 +1,6 @@
+Bytes : (bytes: Bytes)
+      : (size: Number)
+      : (string: String, enum: Character.Encoding)
+      , Integer length()
+      , String =() => with(enum: Byte.StringConverter)
+      ;

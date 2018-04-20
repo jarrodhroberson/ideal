@@ -1,11 +1,11 @@
-grammar Ideal;
+grammar ideal;
 
 // expressions
 
-parse : statement (NL+ statement)* EOF ;
+parse : statement (NL statement)* EOF ;
 
-statement : assignment NL  #assignmentStatement
-          | type_assignment  #typeAssignmentStatement
+statement : assignment '.'  #assignmentStatement
+          | type_assignment #typeAssignmentStatement
           ;
 
 assignment : ID LPAREN parameters RPAREN (assignment ',' NL )*  expression    #functionAssignment
@@ -64,6 +64,11 @@ and_or : AND #and
        ;
 
 bool : TRUE | FALSE ;
+
+<<<<<<< HEAD:src/main/antlr4/com/ideal/antlr/ideal.g4
+comparison : EQUAL | NOT_EQUAL | LESS_THAN | LESS_THAN_OR_EQUAL | GREATER_THAN | GREATER_THAN_OR_EQUAL ;
+
+// LEXER ================================================================
 
 comparison : EQUAL
            | NOT_EQUAL
