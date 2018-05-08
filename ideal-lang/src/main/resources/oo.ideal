@@ -35,7 +35,7 @@ Millis : (m: Integer)
        .
 
 Time : (hour: Hour(0), minute: Minute(0), second: Second(0), millis: Millis(0))
-     , String =() -> format('%s:%s:%s:s', hour, minute, second, millis)
+     , String =() -> format('{hour}:{minute}:{second}:{millis}')
      , Integer =() -> (hour * 3600000) + (minute * 60000) + (second * 1000) + millis
      .
 
@@ -46,7 +46,7 @@ Duration : (ms: Integer(0)) -> millis = ms % 1000
                              , days = ms - ((hours * 86400000) + (minutes * 86400000) + (seconds * 3600000) + (millis * 1000))   / 86400000
                              .
          : (days: Day(0), hours: Hour(0), minutes: Minute(0), seconds: Second(0), millis: Millis(0))
-         , +(d: Duration) -> Duration(Integer(d) + =())
-         , String =() -> format('%s:%s:%s:s', hour, minute, second, millis)
+         , +(d: Duration) -> Duration(Integer(d) + Integer(duration))
+         , String =() -> format('{days}:{hours}:{minutes}:{seconds}:{millis}')
          , Integer =() -> (days * 86400000) +  (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + millis
          .
