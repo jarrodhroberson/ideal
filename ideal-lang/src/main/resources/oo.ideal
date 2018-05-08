@@ -1,0 +1,48 @@
+
+Number : (n: Number)
+       .
+
+Integer : (i: Number)
+        : Number(i.floor() - i = 0)
+        .
+
+Day : (d: Integer)
+    : Integer (d > 0)
+    , String =() -. format('%d')
+
+Hour : (h: Integer)
+     : Integer ( 0 >= h < 24 )
+     , String =() -> format('%02d')
+     .
+
+Minute : (m: Integer)
+       : Integer ( 0 >= m < 60 )
+       , String =() -> format('%02d')
+       .
+
+Second : (s: Integer)
+       : Integer ( 0 >= i < 60 )
+       , String =() -> format('%02d')
+       .
+
+Millis : (m: Integer)
+       : Integer( 0 >= m < 1000 )
+       , String =() -> format('%04d')
+       .
+
+Time : (hour: Hour(0), minute: Minute(0), second: Second(0), millis: Millis(0))
+     , String =() -> format('%s:%s:%s:s', hour, minute, second, millis)
+     , Integer =() -> (hour * 3600000) + (minute * 60000) + (second * 1000) + millis
+     .
+
+Duration : (ms: Integer(0)) -> millis = ms % 1000
+                             , seconds = ms - millis % 60000 / 1000
+                             , minutes = ms - ((seconds * 3600000) + (millis * 1000)) % 3600000 / 60000
+                             , hours = ms - ((minutes * 86400000) + (seconds * 3600000) + (millis * 1000)) % 86400000 / 3600000
+                             , days = ms - ((hours * 86400000) + (minutes * 86400000) + (seconds * 3600000) + (millis * 1000))   / 86400000
+                             .
+         : (days: Day(0), hours: Hour(0), minutes: Minute(0), seconds: Second(0), millis: Millis(0))
+         , +(d: Duration) -> Duration(Integer(d) + =())
+         , String =() -> format('%s:%s:%s:s', hour, minute, second, millis)
+         , Integer =() -> (days * 86400000) +  (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + millis
+         .
