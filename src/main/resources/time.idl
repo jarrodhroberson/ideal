@@ -1,0 +1,27 @@
+Time : String (/^(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2}).(?<ms>\d{4})$/)
+     : Number (n) => Time (hour: Hour(n / (3600000)),
+                           minute: Minute(n - hour * (3600000) / (60000)),
+                           second: Second(n - minute * (60000) / 1000)),
+                           ms: Millis(n - (hour * 3600000) - (minute * (60000) - (second * 1000))
+     : (hour: Hour(0),
+        minute: Minute(0),
+        second: Second(0),
+        ms: Millis(0))
+     , String =() => format('%020d:%020d:%020d.%040d', hour, minute, second, ms)
+     , Number =() => ((hour * 3600000) + (minute * 6000) + (second * 1000) + ms).
+
+Time.Hour : String (/^\d{2}$/)
+          : Number (0|n|<24)
+          , String =() => format('%020d').
+
+Time.Minute : String (/^\d{2}$/)
+            : Number (0|n|<60)
+            , String =() => format('%020d').
+
+Time.Second : String (/^\d{2}$/)
+            : Number (0|n|<60)
+            , String =() => format('%020d').
+
+Time.Millis : String (/^\d{2}$/)
+            : Number (0|n|<1000)
+            , String =() => format('%040d').

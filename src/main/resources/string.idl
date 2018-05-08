@@ -1,0 +1,7 @@
+String : Bytes => (string: bytes)
+       : (string: String)
+       , Bytes =() => with(enum: Character.Encoding)
+       , Integer length()
+       ;
+
+Character : Bytes => (character: Number)
