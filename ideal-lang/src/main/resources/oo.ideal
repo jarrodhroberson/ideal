@@ -1,52 +1,65 @@
+Bytes : ()
+      , Integer size() -> /* number of bytes in the backing array */
+      , Octet each() -> /* callback function to process each octet in order */
+      , String =() -> each(format('%x '))
+      .
 
+String : (bytes: Bytes)
+       , String +(s: String) -> String(Bytes(s) + Bytes())
+       , Integer characters() -> /* number of Unicode characters */
+       , Character each() -> /* callback on each character */
+       , Octet each() -> /* callback on each byte */
+       .
 
 
 /* Signed arbitrary precision numeric type */
 Number : (n: Number)
+       , String =() -> format('%f')
        .
 
 /* Signed Whole number */
 Integer : (i: Number)
-        : Number(i.floor() - i = 0)
+        : Number (i.floor() - i = 0 ? i : Error('{i} is not a valid Integer'))
+        , String =() -> format('%d')
         .
 
 Day : (d: Integer)
-    : Integer (d > 0 ? d : Error('Day can not be less than 0'))
-    , String =() -. format('%d')
+    : Integer (d > 0 ? d : Error('Day {d} can not be less than 0'))
+    , String  =() -. format('%d')
 
 Hour : (h: Integer)
-     : Integer ( 0 >= h < 24 ? h : Error('Hour must be >= 0 and < 24'))
-     , String =() -> format('%02d')
+     : Integer ( 0 >= h < 24 ? h : Error('Hour {h} must be >= 0 and < 24'))
+     , String  =() -> format('%02d')
      .
 
 Minute : (m: Integer)
-       : Integer ( 0 >= m < 60 ? m : Error('Minute must be >= 0 and < 60'))
-       , String =() -> format('%02d')
+       : Integer ( 0 >= m < 60 ? m : Error('Minute {m} must be >= 0 and < 60'))
+       , String  =() -> format('%02d')
        .
 
 Second : (s: Integer)
-       : Integer ( 0 >= i < 60 ? s : Error('Second must be >= 0 and < 60'))
-       , String =() -> format('%02d')
+       : Integer ( 0 >= i < 60 ? s : Error('Second {s} must be >= 0 and < 60'))
+       , String  =() -> format('%02d')
        .
 
 Millis : (m: Integer)
-       : Integer( 0 >= m < 1000 ? m : Error('Millis must be >= 0 and < 1000'))
-       , String =() -> format('%04d')
+       : Integer ( 0 >= m < 1000 ? m : Error('Millis {m} must be >= 0 and < 1000'))
+       , String  =() -> format('%04d')
        .
 
 Time : (hour: Hour(0), minute: Minute(0), second: Second(0), millis: Millis(0))
-     , String =() -> format('{hour}:{minute}:{second}:{millis}')
+     , String  =() -> format('{hour}:{minute}:{second}:{millis}')
      , Integer =() -> (hour * 3600000) + (minute * 60000) + (second * 1000) + millis
      .
 
-Duration : (ms: Integer(0)) -> millis = ms % 1000
-                             , seconds = ms - millis % 60000 / 1000
-                             , minutes = ms - ((seconds * 3600000) + (millis * 1000)) % 3600000 / 60000
-                             , hours = ms - ((minutes * 86400000) + (seconds * 3600000) + (millis * 1000)) % 86400000 / 3600000
-                             , days = ms - ((hours * 86400000) + (minutes * 86400000) + (seconds * 3600000) + (millis * 1000))   / 86400000
-                             .
+Duration : (ms: Integer) -> days: Day(ms - ((hours * 86400000) + (minutes * 86400000) + (seconds * 3600000) + (millis * 1000)) / 86400000)
+                          , hours: Hour(ms - ((minutes * 86400000) + (seconds * 3600000) + (millis * 1000)) % 86400000 / 3600000)
+                          , minutes: Minute(ms - ((seconds * 3600000) + (millis * 1000)) % 3600000 / 60000)
+                          , seconds: Second(ms - millis % 60000 / 1000)
+                          , millis: Millis(ms % 1000)
+                          .
          : (days: Day(0), hours: Hour(0), minutes: Minute(0), seconds: Second(0), millis: Millis(0))
-         , +(d: Duration) -> Duration(Integer(d) + Integer(duration))
+         , Duration +(d: Duration) -> Duration(Integer(d) + Integer(duration))
          , String =() -> format('{days}:{hours}:{minutes}:{seconds}:{millis}')
          , Integer =() -> (days * 86400000) +  (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + millis
          .
