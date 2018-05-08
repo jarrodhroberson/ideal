@@ -1,32 +1,36 @@
 
+
+
+/* Signed arbitrary precision numeric type */
 Number : (n: Number)
        .
 
+/* Signed Whole number */
 Integer : (i: Number)
         : Number(i.floor() - i = 0)
         .
 
 Day : (d: Integer)
-    : Integer (d > 0)
+    : Integer (d > 0 ? d : Error('Day can not be less than 0'))
     , String =() -. format('%d')
 
 Hour : (h: Integer)
-     : Integer ( 0 >= h < 24 )
+     : Integer ( 0 >= h < 24 ? h : Error('Hour must be >= 0 and < 24'))
      , String =() -> format('%02d')
      .
 
 Minute : (m: Integer)
-       : Integer ( 0 >= m < 60 )
+       : Integer ( 0 >= m < 60 ? m : Error('Minute must be >= 0 and < 60'))
        , String =() -> format('%02d')
        .
 
 Second : (s: Integer)
-       : Integer ( 0 >= i < 60 )
+       : Integer ( 0 >= i < 60 ? s : Error('Second must be >= 0 and < 60'))
        , String =() -> format('%02d')
        .
 
 Millis : (m: Integer)
-       : Integer( 0 >= m < 1000 )
+       : Integer( 0 >= m < 1000 ? m : Error('Millis must be >= 0 and < 1000'))
        , String =() -> format('%04d')
        .
 
