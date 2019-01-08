@@ -1,9 +1,12 @@
-Integer : Number (/^-?(0|[1-9][0-9]*)$/)
+Integer : String (/^-?(0|[1-9][0-9]*)$/)
+        : Number (n: Number (floor(n))
+        , String =() format('%d')
+        , HexString =() format('0x%x')
         .
 
 Number : String (/^-?(0|[1-9][0-9]*)(?:\.([0-9]+[1-9]))?$/)
-       .
-
-Number : Bytes ()
+       : Bytes (bytes: Bytes, enum: Bytes.BIG_ENDIAN)
+       , String =() format('%f')
+       , HexString =() format('0x%a')
        .
 

@@ -146,7 +146,7 @@ DIGIT : [0-9] ;
 ATOM : ('A'..'Z')('A'..'Z'|'0'..'9'|'_')* ;
 
 // TypeId is UpperCamelCaseNumeric
-TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9')* ;
+TYPE_ID : ('A'..'Z')('a'..'z'|'A'..'Z'|DIGIT)* ;
 
 //ID lowerCamelCaseAlphaNumeric
 ID : ('a'..'z')('a'..'z'|'A'..'Z'|'0'..'9')* ;

@@ -1,0 +1,3 @@
+Person : ( firstName: String, middleName: String, lastName: String )
+       , String =() format('%s( %s)?( %s)?', firstName, middleName, lastName)
+       .

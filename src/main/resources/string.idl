@@ -1,6 +1,6 @@
-String : Bytes => (string: bytes)
+String : Bytes (string: bytes)
        : (string: String)
-       , Bytes =() => with(enum: Character.Encoding)
+       , Bytes =() with(enum: Character.Encoding)
        , Integer length()
        ;
 

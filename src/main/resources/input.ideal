@@ -6,9 +6,9 @@ nums[4] => 'six'
 
 PI => 3.14159265359
 
-sqr(x) x * x
+sqr(x) => x * x
 
-isEven(n) (n % 2) = 0.
+isEven(n) => (n % 2) = 0
 z => sqr(x:3)
 
-circumference(r) PI * sqr(x:r)
+circumference(r) => PI * sqr(x:r)
